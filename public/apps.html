@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Apps - Davids Development</title>
+
+  <!-- Bootstrap CSS -->
+  <link 
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" 
+    rel="stylesheet" 
+  />
+  <!-- Bootstrap Icons (optional) -->
+  <link 
+    rel="stylesheet" 
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" 
+  />
+
+  <style>
+    /* Root color variables + Dark Theme */
+    :root {
+      --background-color: white;
+      --text-color: black;
+      --navbar-bg: #343a40;
+    }
+    [data-theme="dark"] {
+      --background-color: #121212;
+      --text-color: #f8f9fa;
+      --navbar-bg: #1c1c1c;
+    }
+
+    body {
+      margin: 0;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+    }
+    .navbar {
+      background-color: var(--navbar-bg) !important;
+    }
+
+    /* Grid Section styling */
+    .grid-section {
+      min-height: 100vh;
+      padding: 150px 0;
+    }
+    .card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+      background-color: var(--background-color) !important;
+      color: var(--text-color) !important;
+    }
+    .card:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <img src="UgandanKnuckles.png" alt="My Logo" height="40">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+         <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+         <ul class="navbar-nav ms-auto">
+           <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+           <li class="nav-item"><a class="nav-link active" href="apps.html">Apps</a></li>
+           <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+           <!-- Dark Mode Toggle -->
+           <li class="nav-item">
+             <button id="darkModeToggle" class="btn btn-outline-light ms-3">🌙 Dark Mode</button>
+           </li>
+         </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Apps Grid Section -->
+  <section class="grid-section">
+    <div class="container">
+      <div class="row g-4">
+        <!-- App Card 1 -->
+        <div class="col-md-6">
+          <div class="card p-4">
+            <h3 class="card-title">Password Generator</h3>
+            <p class="card-text">A program that will generate a random password for the user consisting of 2 random words and a 3 digit number.</p>
+            <a href="generator.html" class="btn btn-primary">Open Password Generator</a>
+          </div>
+        </div>
+        <!-- App Card 2 -->
+        <div class="col-md-6">
+          <div class="card p-4">
+            <h3 class="card-title">Undecided</h3>
+            <p class="card-text">Lorem ipsum dolor sit amet. Ad autem voluptas sed eaque accusamus cum numquam accusamus et libero voluptates </p>
+            <a href="downloader.html" class="btn btn-primary">Open</a>
+          </div>
+        </div>
+        <!-- App Card 3 -->
+        <div class="col-md-6">
+          <div class="card p-4">
+            <h3 class="card-title">Undecided</h3>
+            <p class="card-text">Lorem ipsum dolor sit amet. Ad autem voluptas sed eaque accusamus cum numquam accusamus et libero voluptates.</p>
+            <a href="app-three.html" class="btn btn-primary">Open</a>
+          </div>
+        </div>
+        <!-- App Card 4 -->
+        <div class="col-md-6">
+          <div class="card p-4">
+            <h3 class="card-title">Undecided</h3>
+            <p class="card-text">Lorem ipsum dolor sit amet. Ad autem voluptas sed eaque accusamus cum numquam accusamus et libero voluptates.</p>
+            <a href="app-four.html" class="btn btn-primary">Open</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-light py-4">
+    <div class="container text-center">
+      <p>&copy; 2025 Davids Development. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Dark Mode Toggle
+    document.addEventListener("DOMContentLoaded", function () {
+      const darkModeToggle = document.getElementById("darkModeToggle");
+      const currentTheme = localStorage.getItem("theme");
+      if (currentTheme) {
+        document.documentElement.setAttribute("data-theme", currentTheme);
+        darkModeToggle.textContent = 
+          currentTheme === "dark" ? "☀️ Light Mode" : "🌙 Dark Mode";
+      }
+      darkModeToggle.addEventListener("click", function () {
+        let theme = document.documentElement.getAttribute("data-theme");
+        if (theme === "dark") {
+          document.documentElement.setAttribute("data-theme", "light");
+          localStorage.setItem("theme", "light");
+          darkModeToggle.textContent = "🌙 Dark Mode";
+        } else {
+          document.documentElement.setAttribute("data-theme", "dark");
+          localStorage.setItem("theme", "dark");
+          darkModeToggle.textContent = "☀️ Light Mode";
+        }
+      });
+    });
+  </script>
+</body>
+</html>
