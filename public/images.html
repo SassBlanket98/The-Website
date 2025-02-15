@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Apps - Davids Development</title>
+  <title>Gallery - Davids Development</title>
 
   <!-- Bootstrap CSS -->
   <link 
@@ -47,6 +47,7 @@
     .card {
       border: none;
       border-radius: 15px;
+      overflow: hidden;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       transition: transform 0.3s ease;
       background-color: var(--background-color) !important;
@@ -54,6 +55,11 @@
     }
     .card:hover {
       transform: scale(1.05);
+    }
+    .card-img-top {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
   </style>
 </head>
@@ -71,7 +77,8 @@
       <div class="collapse navbar-collapse" id="navbarNav">
          <ul class="navbar-nav ms-auto">
            <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-           <li class="nav-item"><a class="nav-link active" href="apps.html">Apps</a></li>
+           <li class="nav-item"><a class="nav-link" href="apps.html">Apps</a></li>
+           <li class="nav-item"><a class="nav-link active" href="gallery.html">Gallery</a></li>
            <!-- Dark Mode Toggle -->
            <li class="nav-item">
              <button id="darkModeToggle" class="btn btn-outline-light ms-3">🌙 Dark Mode</button>
@@ -81,42 +88,41 @@
     </div>
   </nav>
 
-  <!-- Apps Grid Section -->
+  <!-- Gallery Grid Section -->
   <section class="grid-section">
     <div class="container">
       <div class="row g-4">
-        <!-- App Card 1 -->
-        <div class="col-md-6">
-          <div class="card p-4">
-            <h3 class="card-title">Password Generator</h3>
-            <p class="card-text">A program that will generate a random password for the user consisting of 2 random words and a 3 digit number.</p>
-            <a href="generator.html" class="btn btn-primary">Open Password Generator</a>
+        <!-- Image Card 1 -->
+        <div class="col-md-4">
+          <div class="card">
+            <img src="fakeVegito.png" class="card-img-top" alt="Generated Image 1">
+            <div class="card-body">
+              <h5 class="card-title">Fake Vegito</h5>
+              <p class="card-text">This is a placeholder.</p>
+            </div>
           </div>
         </div>
-        <!-- App Card 2 -->
-        <div class="col-md-6">
-          <div class="card p-4">
-            <h3 class="card-title">Undecided</h3>
-            <p class="card-text">Lorem ipsum dolor sit amet. Ad autem voluptas sed eaque accusamus cum numquam accusamus et libero voluptates </p>
-            <a href="downloader.html" class="btn btn-primary">Open</a>
+        <!-- Image Card 2 -->
+        <div class="col-md-4">
+          <div class="card">
+            <img src="Caulifla.png" class="card-img-top" alt="Generated Image 2">
+            <div class="card-body">
+              <h5 class="card-title">Fake Caulifla</h5>
+              <p class="card-text">This is a placeholder.</p>
+            </div>
           </div>
         </div>
-        <!-- App Card 3 -->
-        <div class="col-md-6">
-          <div class="card p-4">
-            <h3 class="card-title">Undecided</h3>
-            <p class="card-text">Lorem ipsum dolor sit amet. Ad autem voluptas sed eaque accusamus cum numquam accusamus et libero voluptates.</p>
-            <a href="app-three.html" class="btn btn-primary">Open</a>
+        <!-- Image Card 3 -->
+        <div class="col-md-4">
+          <div class="card">
+            <img src="fakeGogeta.png" class="card-img-top" alt="Generated Image 3">
+            <div class="card-body">
+              <h5 class="card-title">Fake Gogeta</h5>
+              <p class="card-text">This is a placeholder.</p>
+            </div>
           </div>
         </div>
-        <!-- App Card 4 -->
-        <div class="col-md-6">
-          <div class="card p-4">
-            <h3 class="card-title">Undecided</h3>
-            <p class="card-text">Lorem ipsum dolor sit amet. Ad autem voluptas sed eaque accusamus cum numquam accusamus et libero voluptates.</p>
-            <a href="app-four.html" class="btn btn-primary">Open</a>
-          </div>
-        </div>
+        <!-- Add additional image cards as needed -->
       </div>
     </div>
   </section>
