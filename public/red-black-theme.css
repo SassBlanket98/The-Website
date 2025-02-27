@@ -1,0 +1,396 @@
+/* Red and Black Theme - Root Variables */
+:root {
+  --primary-color: #ff1a1a;
+  --primary-hover: #cc0000;
+  --background-color: #0a0a0a;
+  --card-bg: #1a1a1a;
+  --text-color: #f5f5f5;
+  --secondary-text: #b3b3b3;
+  --navbar-bg: #000000;
+  --section-spacing: 6rem;
+  --accent-color: #ff4d4d;
+  --card-border: #ff0000;
+  --focus-color: #ff3333;
+  --break-color: #990000;
+
+  /* Weather app gradients */
+  --weather-sunny: linear-gradient(120deg, #ff4d4d 0%, #990000 100%);
+  --weather-cloudy: linear-gradient(to top, #660000 0%, #990000 100%);
+  --weather-rainy: linear-gradient(to top, #990000 0%, #330000 100%);
+  --weather-snow: linear-gradient(to top, #660000 0%, #330000 100%);
+  --weather-storm: linear-gradient(to top, #330000 0%, #660000 100%);
+  --weather-night: linear-gradient(
+    to top,
+    #0c0c0c 0%,
+    #330000 100%,
+    #660000 100%,
+    #330000 100%
+  );
+}
+
+/* No light/dark mode toggle is needed since we're using a fixed theme */
+[data-theme="dark"] {
+  --primary-color: #ff1a1a;
+  --primary-hover: #cc0000;
+  --background-color: #0a0a0a;
+  --card-bg: #1a1a1a;
+  --text-color: #f5f5f5;
+  --secondary-text: #b3b3b3;
+  --navbar-bg: #000000;
+  --sidebar-bg: #1a1a1a;
+  --note-item-bg: #1f1f1f;
+  --note-item-hover: #262626;
+  --editor-bg: #1a1a1a;
+  --editor-border: #ff0000;
+  --no-notes-bg: #1a1a1a;
+  --preview-bg: #1a1a1a;
+  --focus-color: #ff3333;
+  --break-color: #990000;
+}
+
+/* Global Styling */
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+/* Navigation Styling */
+.navbar {
+  background-color: var(--navbar-bg) !important;
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.navbar-brand {
+  color: var(--primary-color) !important;
+  font-weight: 700;
+}
+
+.nav-link {
+  color: var(--text-color) !important;
+}
+
+.nav-link:hover {
+  color: var(--primary-color) !important;
+}
+
+.nav-link:after {
+  background-color: var(--primary-color);
+}
+
+.navbar-toggler {
+  border-color: var(--primary-color);
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 0, 0, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* Button Styling */
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+  border-color: var(--primary-hover);
+  box-shadow: 0 4px 10px rgba(255, 0, 0, 0.3);
+}
+
+.btn-outline-primary {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-outline-light {
+  border-color: var(--text-color);
+}
+
+.btn-outline-light:hover {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+/* Card Styling */
+.card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 5px 15px rgba(255, 0, 0, 0.1);
+}
+
+.card:hover {
+  box-shadow: 0 15px 30px rgba(255, 0, 0, 0.2);
+  border-color: var(--primary-color);
+}
+
+.card-title {
+  color: var(--primary-color);
+}
+
+/* Hero Section */
+.hero {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+    url("https://images.unsplash.com/photo-1562813733-b31f71025d54?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2069&q=80");
+}
+
+.text-highlight {
+  color: var(--primary-color);
+}
+
+/* Service Icons */
+.service-icon {
+  background-color: rgba(255, 0, 0, 0.1);
+  color: var(--primary-color);
+}
+
+.card:hover .service-icon {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+}
+
+/* Section Headings */
+.section-heading:after {
+  background-color: var(--primary-color);
+}
+
+/* Footer */
+footer {
+  background-color: var(--navbar-bg);
+  border-top: 2px solid var(--primary-color);
+}
+
+.footer-social a {
+  color: var(--text-color);
+}
+
+.footer-social a:hover {
+  color: var(--primary-color);
+}
+
+hr {
+  border-color: rgba(255, 0, 0, 0.2);
+}
+
+/* Form Controls */
+.form-control {
+  background-color: var(--card-bg);
+  border: 1px solid rgba(255, 0, 0, 0.2);
+  color: var(--text-color);
+}
+
+.form-control:focus {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.25rem rgba(255, 0, 0, 0.25);
+}
+
+/* Password Generator Specific */
+.password-display {
+  background-color: rgba(255, 0, 0, 0.1);
+  border: 1px solid rgba(255, 0, 0, 0.2);
+}
+
+.strength-meter {
+  background-color: #333;
+}
+
+.strength-weak {
+  background-color: #990000;
+}
+
+.strength-medium {
+  background-color: #cc0000;
+}
+
+.strength-strong {
+  background-color: #ff0000;
+}
+
+.strength-text {
+  color: var(--primary-color);
+}
+
+/* Pomodoro Timer Specific */
+.mode-focus .timer-display,
+.mode-focus .timer-label {
+  color: var(--focus-color);
+}
+
+.mode-break .timer-display,
+.mode-break .timer-label {
+  color: var(--break-color);
+}
+
+.mode-focus .progress-bar {
+  background-color: var(--focus-color);
+}
+
+.mode-break .progress-bar {
+  background-color: var(--break-color);
+}
+
+.timer-btn-start {
+  background-color: var(--focus-color);
+}
+
+.timer-btn-reset {
+  background-color: var(--break-color);
+}
+
+.session-dot.completed {
+  background-color: var(--focus-color);
+}
+
+/* Note Keeper Specific */
+.sidebar {
+  background-color: var(--sidebar-bg);
+  border-right: 1px solid var(--editor-border);
+}
+
+.note-item {
+  background-color: var(--note-item-bg);
+}
+
+.note-item:hover {
+  background-color: var(--note-item-hover);
+}
+
+.note-item.active {
+  border-left: 3px solid var(--primary-color);
+}
+
+.new-note-btn {
+  background-color: var(--primary-color);
+}
+
+.new-note-btn:hover {
+  background-color: var(--primary-hover);
+}
+
+.editor,
+.preview {
+  background-color: var(--editor-bg);
+  color: var(--text-color);
+}
+
+.tab.active {
+  border-bottom: 2px solid var(--primary-color);
+  color: var(--primary-color);
+}
+
+.toast-message {
+  background-color: var(--primary-color);
+}
+
+/* Weather Dashboard Specific */
+.search-button {
+  color: var(--primary-color);
+}
+
+.search-button:hover {
+  color: var(--primary-hover);
+}
+
+.recent-search-item:hover {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.forecast-card:hover {
+  border: 1px solid var(--primary-color);
+}
+
+.wi-sunny {
+  color: var(--primary-color);
+}
+
+.wi-cloudy {
+  color: #cc0000;
+}
+
+.wi-rainy {
+  color: #990000;
+}
+
+.wi-snow {
+  color: #660000;
+}
+
+.wi-storm {
+  color: #330000;
+}
+
+/* Form Switch */
+.form-check-input:checked {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+/* Repo Stats */
+.text-warning {
+  color: var(--primary-color) !important;
+}
+
+/* Common custom elements */
+a {
+  color: var(--primary-color);
+}
+
+a:hover {
+  color: var(--primary-hover);
+}
+
+/* Dark Mode Toggle Button Modification */
+#darkModeToggle {
+  display: none; /* Hide the dark mode toggle since we're using a fixed theme */
+}
+
+/* Add red glow effect to key elements */
+.card:hover,
+.btn-primary:hover,
+.service-icon:hover {
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+}
+
+/* Add red border accents */
+.section-heading,
+.card-title,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-shadow: 1px 1px 3px rgba(255, 0, 0, 0.2);
+}
+
+/* Progress bars (for weather app) */
+.progress-bar.bg-success {
+  background-color: var(--primary-color) !important;
+}
+
+.progress-bar.bg-info {
+  background-color: #cc0000 !important;
+}
+
+.progress-bar.bg-warning {
+  background-color: #990000 !important;
+}
+
+.progress-bar.bg-danger {
+  background-color: #660000 !important;
+}
+
+/* App-specific features */
+.app-feature {
+  background-color: rgba(255, 0, 0, 0.1);
+  color: var(--primary-color);
+}

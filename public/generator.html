@@ -1,122 +1,451 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Davids Development - Password Generator</title>
+  <meta name="description" content="Generate secure, memorable passwords with our free password generator tool">
+  <title>Password Generator - David Hill Development</title>
   <!-- Bootstrap CSS -->
-  <link 
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" 
-    rel="stylesheet" 
-  />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" />
+  <!-- AOS - Animate On Scroll Library -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
   <style>
     /* Root color variables + Dark Theme */
     :root {
-      --background-color: white;
-      --text-color: black;
-      --navbar-bg: #343a40;
+      --primary-color: #4361ee;
+      --primary-hover: #3a56d4;
+      --background-color: #ffffff;
+      --card-bg: #f8f9fa;
+      --text-color: #212529;
+      --secondary-text: #6c757d;
+      --navbar-bg: #212529;
+      --section-spacing: 6rem;
     }
+
     [data-theme="dark"] {
+      --primary-color: #4361ee;
+      --primary-hover: #3a56d4;
       --background-color: #121212;
+      --card-bg: #1e1e1e;
       --text-color: #f8f9fa;
+      --secondary-text: #adb5bd;
       --navbar-bg: #1c1c1c;
     }
+
     body {
       margin: 0;
       background-color: var(--background-color);
       color: var(--text-color);
       transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     }
+
     .navbar {
       background-color: var(--navbar-bg) !important;
+      padding: 1rem 0;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
 
+    .navbar-brand {
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+    }
 
+    .navbar-brand img {
+      margin-right: 10px;
+    }
 
+    .nav-link {
+      font-weight: 500;
+      transition: all 0.3s ease;
+      margin: 0 5px;
+      position: relative;
+    }
+
+    .nav-link:after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: var(--primary-color);
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover:after,
+    .nav-link.active:after {
+      width: 100%;
+    }
+
+    /* Main content */
+    main {
+      min-height: 90vh;
+      padding: 6rem 0;
+    }
+
+    /* Password Generator Specific Styles */
+    .password-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: var(--card-bg);
+      border-radius: 1rem;
+      padding: 2.5rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    }
+
+    .password-display {
+      position: relative;
+      margin: 2rem 0;
+      padding: 1.5rem;
+      background-color: rgba(67, 97, 238, 0.05);
+      border-radius: 0.5rem;
+      font-family: 'Courier New', monospace;
+      font-size: 1.75rem;
+      letter-spacing: 2px;
+      text-align: center;
+      word-break: break-all;
+      border: 1px solid rgba(67, 97, 238, 0.2);
+      min-height: 5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .copy-btn {
+      position: absolute;
+      right: 0.5rem;
+      top: 0.5rem;
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      padding: 0.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      opacity: 0.9;
+    }
+
+    .copy-btn:hover {
+      background: var(--primary-hover);
+      opacity: 1;
+    }
+
+    .password-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+
+    .form-switch {
+      padding-left: 2.5em;
+    }
+
+    .form-check-input:checked {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+    }
+
+    .strength-meter {
+      height: 10px;
+      background-color: #e9ecef;
+      border-radius: 1rem;
+      margin: 1.5rem 0;
+      overflow: hidden;
+    }
+
+    .strength-bar {
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .strength-weak {
+      background-color: #dc3545;
+    }
+
+    .strength-medium {
+      background-color: #ffc107;
+    }
+
+    .strength-strong {
+      background-color: #198754;
+    }
+
+    .strength-text {
+      text-align: right;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .password-history {
+      margin-top: 3rem;
+    }
+
+    .history-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.75rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      font-family: 'Courier New', monospace;
+    }
+
+    .history-password {
+      max-width: 70%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .btn-generate {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+      padding: 0.8rem 2rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .btn-generate:hover {
+      background-color: var(--primary-hover);
+      border-color: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);
+    }
+
+    .btn-generate:active {
+      transform: translateY(0);
+    }
+
+    /* Password generator animation */
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .pulse {
+      animation: pulse 0.5s;
+    }
+
+    /* Password Tooltip */
+    .password-tooltip {
+      position: absolute;
+      bottom: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #333;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 0.25rem;
+      font-size: 0.875rem;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 10;
+    }
+
+    .password-tooltip.show {
+      opacity: 1;
+    }
+
+    /* Footer */
+    footer {
+      background-color: var(--navbar-bg);
+      padding: 4rem 0 2rem;
+    }
+
+    .footer-social {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-social a {
+      color: #fff;
+      margin: 0 0.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .footer-social a:hover {
+      color: var(--primary-color);
+      transform: translateY(-3px);
+    }
+
+    /* Media Queries */
+    @media (max-width: 768px) {
+      .password-options {
+        flex-direction: column;
+      }
+
+      .password-display {
+        font-size: 1.25rem;
+      }
+
+      .navbar-collapse {
+        background-color: var(--navbar-bg);
+        padding: 1rem;
+        border-radius: 0.5rem;
+      }
+    }
   </style>
 </head>
+
 <body>
   <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
     <div class="container">
       <a class="navbar-brand" href="index.html">
-        <img src="UgandanKnuckles.png" alt="My Logo" height="40">
+        <img src="UgandanKnuckles.png" alt="DH" height="40"> David Hill
       </a>
-      <button 
-        class="navbar-toggler" 
-        type="button" 
-        data-bs-toggle="collapse" 
-        data-bs-target="#navbarNav" 
-        aria-controls="navbarNav" 
-        aria-expanded="false" 
-        aria-label="Toggle navigation">
-         <span class="navbar-toggler-icon"></span>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
-         <ul class="navbar-nav ms-auto">
-           <li class="nav-item">
-             <a class="nav-link" href="index.html">Home</a>
-           </li>
-           <li class="nav-item">
-             <button id="darkModeToggle" class="btn btn-outline-light ms-3">
-               🌙 Dark Mode
-             </button>
-           </li>
-         </ul>
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="apps.html">Apps</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="images.html">Gallery</a>
+          </li>
+          <li class="nav-item">
+            <button id="darkModeToggle" class="btn btn-outline-light ms-3">
+              🌙 Dark Mode
+            </button>
+          </li>
+        </ul>
       </div>
     </div>
   </nav>
 
   <!-- Main Content -->
-  <section class="container py-5">
-    <div class="row justify-content-center align-items-center" style="min-height: 80vh;">
-      <div class="col-md-8 text-center">
-        <h1 class="display-4">Password Generator</h1>
-        <p class="lead">Click the button below to generate a secure password.</p>
-        <button id="generateButton" class="btn btn-primary btn-lg mt-3">
-          Generate Password
-        </button>
-        <p id="password" class="mt-4 fs-4"></p>
+  <main>
+    <div class="container">
+      <div class="row justify-content-center" data-aos="fade-up">
+        <div class="col-md-10">
+          <h1 class="text-center mb-4">Secure Password Generator</h1>
+          <p class="lead text-center mb-5">Create strong, memorable passwords that are both secure and easy to remember
+            using our advanced word-based password generator.</p>
+
+          <div class="password-container">
+            <div class="password-display" id="passwordDisplay">
+              Click Generate to create a password
+              <button id="copyButton" class="copy-btn d-none" title="Copy to clipboard">
+                <i class="bi bi-clipboard"></i>
+              </button>
+              <div id="copyTooltip" class="password-tooltip">Copied!</div>
+            </div>
+
+            <div class="strength-meter">
+              <div id="strengthBar" class="strength-bar"></div>
+            </div>
+            <div class="strength-text" id="strengthText">Password strength will appear here</div>
+
+            <div class="password-options">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="includeNumbers" checked>
+                <label class="form-check-label" for="includeNumbers">Include Numbers</label>
+              </div>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="includeSpecial">
+                <label class="form-check-label" for="includeSpecial">Include Special Characters</label>
+              </div>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="allCaps">
+                <label class="form-check-label" for="allCaps">ALL CAPS</label>
+              </div>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="threeWords" checked>
+                <label class="form-check-label" for="threeWords">Use Three Words</label>
+              </div>
+            </div>
+
+            <div class="text-center mt-4">
+              <button id="generateButton" class="btn btn-generate">
+                <i class="bi bi-shield-lock me-2"></i>Generate Password
+              </button>
+            </div>
+
+            <div class="password-history mt-5">
+              <h5>Password History <small class="text-muted">(stored in browser only)</small></h5>
+              <div id="passwordHistory" class="mt-3">
+                <!-- Password history will be added here -->
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-5" data-aos="fade-up">
+            <h2 class="h4">Why Use Our Password Generator?</h2>
+            <p>Using strong, unique passwords is essential for online security. Our word-based generator creates
+              passwords that are:</p>
+            <ul>
+              <li><strong>Secure:</strong> Hard for attackers to crack</li>
+              <li><strong>Memorable:</strong> Easier to remember than random characters</li>
+              <li><strong>Unique:</strong> A new combination every time</li>
+            </ul>
+            <p>All password generation happens in your browser - we never store or have access to your passwords.</p>
+          </div>
+        </div>
       </div>
     </div>
-  </section>
+  </main>
 
   <!-- Footer -->
-  <footer class="bg-dark text-light py-4">
-    <div class="container text-center">
-      <p>&copy; 2025 Davids Development. All rights reserved.</p>
+  <footer class="text-light">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 mb-4">
+          <h5>David Hill</h5>
+          <p>Building digital experiences that make a difference. Let's work together to bring your vision to life.</p>
+        </div>
+        <div class="col-lg-4 mb-4">
+          <h5>Quick Links</h5>
+          <ul class="list-unstyled">
+            <li><a href="index.html" class="text-light">Home</a></li>
+            <li><a href="apps.html" class="text-light">Apps</a></li>
+            <li><a href="images.html" class="text-light">Gallery</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-4 mb-4">
+          <h5>Connect</h5>
+          <div class="footer-social">
+            <a href="#"><i class="bi bi-github"></i></a>
+            <a href="#"><i class="bi bi-linkedin"></i></a>
+            <a href="#"><i class="bi bi-twitter"></i></a>
+            <a href="#"><i class="bi bi-envelope"></i></a>
+          </div>
+        </div>
+      </div>
+      <hr class="my-4">
+      <div class="text-center">
+        <p>&copy; 2025 David Hill Development. All rights reserved.</p>
+      </div>
     </div>
   </footer>
 
   <!-- Bootstrap JS Bundle -->
-  <script 
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- AOS - Animate On Scroll -->
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 
   <script>
-    // Dark Mode Toggle Script
-    document.addEventListener("DOMContentLoaded", function () {
-      const darkModeToggle = document.getElementById("darkModeToggle");
-      const currentTheme = localStorage.getItem("theme");
-      if (currentTheme) {
-        document.documentElement.setAttribute("data-theme", currentTheme);
-        darkModeToggle.textContent = currentTheme === "dark" ? "☀️ Light Mode" : "🌙 Dark Mode";
-      }
-      darkModeToggle.addEventListener("click", function () {
-        let theme = document.documentElement.getAttribute("data-theme");
-        if (theme === "dark") {
-          document.documentElement.setAttribute("data-theme", "light");
-          localStorage.setItem("theme", "light");
-          darkModeToggle.textContent = "🌙 Dark Mode";
-        } else {
-          document.documentElement.setAttribute("data-theme", "dark");
-          localStorage.setItem("theme", "dark");
-          darkModeToggle.textContent = "☀️ Light Mode";
-        }
-      });
-    });
-
-    // Password Generator Code
+    // Words array for password generation
     const words = [
       "nebula", "comet", "galaxy", "meteor", "asteroid", "orbit", "quasar", "eclipse", "nova", "cosmos",
       "zenith", "horizon", "solstice", "equinox", "celestial", "lunar", "stellar", "satellite", "planet", "vortex",
@@ -140,31 +469,223 @@
       "vivid", "phantasmagoria", "incandescence", "luminescence", "transcendence", "evolution", "revolution", "epochal", "infinitude", "constellation"
     ];
 
-    function getRandomWord() {
-      const randomIndex = Math.floor(Math.random() * words.length);
-      return words[randomIndex];
-    }
+    // Special characters
+    const specialChars = ['!', '@', '#', '$', '%', '&', '*', '?'];
 
-    function getRandomNumber() {
-      const number = Math.floor(Math.random() * 1000);
-      return String(number).padStart(3, '0');
-    }
+    // DOM elements
+    document.addEventListener("DOMContentLoaded", function () {
+      // Initialize AOS Animation Library
+      AOS.init({
+        once: true,
+        duration: 800,
+      });
 
-    function capitalize(word) {
-      return word.charAt(0).toUpperCase() + word.slice(1);
-    }
+      const passwordDisplay = document.getElementById('passwordDisplay');
+      const generateButton = document.getElementById('generateButton');
+      const copyButton = document.getElementById('copyButton');
+      const copyTooltip = document.getElementById('copyTooltip');
+      const includeNumbers = document.getElementById('includeNumbers');
+      const includeSpecial = document.getElementById('includeSpecial');
+      const allCaps = document.getElementById('allCaps');
+      const threeWords = document.getElementById('threeWords');
+      const strengthBar = document.getElementById('strengthBar');
+      const strengthText = document.getElementById('strengthText');
+      const passwordHistory = document.getElementById('passwordHistory');
 
-    function generatePassword() {
-      const word1 = capitalize(getRandomWord());
-      const word2 = capitalize(getRandomWord());
-      const number = getRandomNumber();
-      return word1 + word2 + number;
-    }
+      // Initialize password history array from local storage
+      let history = JSON.parse(localStorage.getItem('passwordHistory')) || [];
+      updatePasswordHistory();
 
-    document.getElementById('generateButton').addEventListener('click', function() {
-      const password = generatePassword();
-      document.getElementById('password').textContent = password;
+      // Dark Mode Toggle
+      const darkModeToggle = document.getElementById("darkModeToggle");
+      const currentTheme = localStorage.getItem("theme");
+      if (currentTheme) {
+        document.documentElement.setAttribute("data-theme", currentTheme);
+        darkModeToggle.textContent =
+          currentTheme === "dark" ? "☀️ Light Mode" : "🌙 Dark Mode";
+      }
+      darkModeToggle.addEventListener("click", function () {
+        let theme = document.documentElement.getAttribute("data-theme");
+        if (theme === "dark") {
+          document.documentElement.setAttribute("data-theme", "light");
+          localStorage.setItem("theme", "light");
+          darkModeToggle.textContent = "🌙 Dark Mode";
+        } else {
+          document.documentElement.setAttribute("data-theme", "dark");
+          localStorage.setItem("theme", "dark");
+          darkModeToggle.textContent = "☀️ Light Mode";
+        }
+      });
+
+      // Generate password button click
+      generateButton.addEventListener('click', function () {
+        const password = generatePassword();
+        displayPassword(password);
+
+        // Add to history
+        if (history.length >= 5) {
+          history.pop(); // Remove the oldest password
+        }
+        history.unshift({
+          password: password,
+          date: new Date().toLocaleString()
+        });
+        localStorage.setItem('passwordHistory', JSON.stringify(history));
+        updatePasswordHistory();
+
+        // Show copy button
+        copyButton.classList.remove('d-none');
+
+        // Add animation
+        passwordDisplay.classList.add('pulse');
+        setTimeout(() => {
+          passwordDisplay.classList.remove('pulse');
+        }, 500);
+
+        // Calculate and display password strength
+        calculatePasswordStrength(password);
+      });
+
+      // Copy password button click
+      copyButton.addEventListener('click', function () {
+        const password = passwordDisplay.textContent.trim();
+        navigator.clipboard.writeText(password).then(() => {
+          // Show tooltip
+          copyTooltip.classList.add('show');
+          setTimeout(() => {
+            copyTooltip.classList.remove('show');
+          }, 2000);
+        });
+      });
+
+      // Helper functions
+      function getRandomWord() {
+        const randomIndex = Math.floor(Math.random() * words.length);
+        return words[randomIndex];
+      }
+
+      function getRandomNumber() {
+        return Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+      }
+
+      function getRandomSpecialChar() {
+        const randomIndex = Math.floor(Math.random() * specialChars.length);
+        return specialChars[randomIndex];
+      }
+
+      function capitalize(word) {
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      }
+
+      function generatePassword() {
+        // Get random words
+        let word1 = capitalize(getRandomWord());
+        let word2 = capitalize(getRandomWord());
+        let word3 = threeWords.checked ? capitalize(getRandomWord()) : '';
+
+        // Apply all caps if checked
+        if (allCaps.checked) {
+          word1 = word1.toUpperCase();
+          word2 = word2.toUpperCase();
+          if (threeWords.checked) {
+            word3 = word3.toUpperCase();
+          }
+        }
+
+        // Generate number if checked
+        let number = includeNumbers.checked ? getRandomNumber() : '';
+
+        // Add special character if checked
+        let special = includeSpecial.checked ? getRandomSpecialChar() : '';
+
+        // Combine components
+        return threeWords.checked
+          ? word1 + word2 + word3 + number + special
+          : word1 + word2 + number + special;
+      }
+
+      function displayPassword(password) {
+        passwordDisplay.textContent = password;
+      }
+
+      function calculatePasswordStrength(password) {
+        let strength = 0;
+
+        // Length check
+        if (password.length > 12) strength += 25;
+        else if (password.length > 8) strength += 15;
+        else strength += 5;
+
+        // Word combination
+        strength += threeWords.checked ? 30 : 20;
+
+        // Numbers
+        if (includeNumbers.checked) strength += 15;
+
+        // Special characters
+        if (includeSpecial.checked) strength += 30;
+
+        // Mixed case
+        if (!allCaps.checked && /[a-z]/.test(password) && /[A-Z]/.test(password)) strength += 15;
+
+        // Cap at 100
+        strength = Math.min(strength, 100);
+
+        // Update UI
+        strengthBar.style.width = strength + '%';
+
+        if (strength < 50) {
+          strengthBar.className = 'strength-bar strength-weak';
+          strengthText.textContent = 'Weak';
+        } else if (strength < 75) {
+          strengthBar.className = 'strength-bar strength-medium';
+          strengthText.textContent = 'Medium';
+        } else {
+          strengthBar.className = 'strength-bar strength-strong';
+          strengthText.textContent = 'Strong';
+        }
+      }
+
+      function updatePasswordHistory() {
+        passwordHistory.innerHTML = '';
+
+        if (history.length === 0) {
+          passwordHistory.innerHTML = '<p class="text-muted">No passwords generated yet.</p>';
+          return;
+        }
+
+        history.forEach((item, index) => {
+          const historyItem = document.createElement('div');
+          historyItem.className = 'history-item';
+
+          historyItem.innerHTML = `
+            <div class="history-password">${item.password}</div>
+            <div class="history-actions">
+              <button class="btn btn-sm btn-outline-primary history-copy" data-password="${item.password}">
+                <i class="bi bi-clipboard"></i>
+              </button>
+            </div>
+          `;
+
+          passwordHistory.appendChild(historyItem);
+        });
+
+        // Add event listeners to copy buttons
+        document.querySelectorAll('.history-copy').forEach(button => {
+          button.addEventListener('click', function () {
+            const password = this.getAttribute('data-password');
+            navigator.clipboard.writeText(password);
+
+            // Visual feedback
+            this.innerHTML = '<i class="bi bi-clipboard-check"></i>';
+            setTimeout(() => {
+              this.innerHTML = '<i class="bi bi-clipboard"></i>';
+            }, 2000);
+          });
+        });
+      }
     });
   </script>
 </body>
+
 </html>

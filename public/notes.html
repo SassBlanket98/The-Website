@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Create, edit and organize your notes with this simple note-taking application">
+    <title>Note Keeper - David Hill Development</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" />
+    <!-- AOS - Animate On Scroll Library -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <!-- Highlight.js for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css"
+        rel="stylesheet">
+    <!-- Markdown CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.1.0/github-markdown.min.css"
+        rel="stylesheet">
+
+    <style>
+        /* Root color variables + Dark Theme */
+        :root {
+            --primary-color: #4361ee;
+            --primary-hover: #3a56d4;
+            --background-color: #ffffff;
+            --card-bg: #f8f9fa;
+            --text-color: #212529;
+            --secondary-text: #6c757d;
+            --navbar-bg: #212529;
+            --section-spacing: 6rem;
+            --sidebar-bg: #f8f9fa;
+            --note-item-bg: #fff;
+            --note-item-hover: #f1f3f9;
+            --editor-bg: #fff;
+            --editor-border: #dee2e6;
+            --no-notes-bg: #f8f9fa;
+            --preview-bg: #fff;
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #4361ee;
+            --primary-hover: #3a56d4;
+            --background-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-color: #f8f9fa;
+            --secondary-text: #adb5bd;
+            --navbar-bg: #1c1c1c;
+            --sidebar-bg: #1e1e1e;
+            --note-item-bg: #2d2d2d;
+            --note-item-hover: #333;
+            --editor-bg: #2d2d2d;
+            --editor-border: #444;
+            --no-notes-bg: #1e1e1e;
+            --preview-bg: #2d2d2d;
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            background-color: var(--navbar-bg) !important;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-brand img {
+            margin-right: 10px;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin: 0 5px;
+            position: relative;
+        }
+
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover:after,
+        .nav-link.active:after {
+            width: 100%;
+        }
+
+        /* Main content */
+        main {
+            flex: 1;
+            padding: 1rem 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .notes-container {
+            flex: 1;
+            display: flex;
+            margin-top: 1rem;
+            position: relative;
+            height: calc(100vh - 160px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 300px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--editor-border);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 1rem;
+            border-bottom: 1px solid var(--editor-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-title {
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .new-note-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .new-note-btn:hover {
+            background-color: var(--primary-hover);
+            transform: scale(1.1);
+        }
+
+        .search-bar {
+            padding: 1rem;
+            border-bottom: 1px solid var(--editor-border);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--editor-border);
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .notes-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0.5rem;
+        }
+
+        .note-item {
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            background-color: var(--note-item-bg);
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .note-item:hover {
+            background-color: var(--note-item-hover);
+        }
+
+        .note-item.active {
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .note-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .note-preview {
+            font-size: 0.8rem;
+            color: var(--secondary-text);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .note-date {
+            font-size: 0.7rem;
+            color: var(--secondary-text);
+            margin-top: 0.5rem;
+        }
+
+        /* Editor */
+        .editor-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .no-notes {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--no-notes-bg);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .no-notes-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-text);
+        }
+
+        .editor-header {
+            padding: 1rem;
+            border-bottom: 1px solid var(--editor-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--editor-bg);
+        }
+
+        .editor-title {
+            margin: 0;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .editor-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .editor-action-btn {
+            border: none;
+            background: none;
+            cursor: pointer;
+            padding: 0.25rem;
+            font-size: 1rem;
+            color: var(--secondary-text);
+            border-radius: 0.25rem;
+            transition: all 0.3s ease;
+        }
+
+        .editor-action-btn:hover {
+            color: var(--primary-color);
+            background-color: var(--note-item-hover);
+        }
+
+        .tabs {
+            display: flex;
+            background-color: var(--editor-bg);
+            border-bottom: 1px solid var(--editor-border);
+        }
+
+        .tab {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            border-bottom: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .editor-content {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .editor {
+            flex: 1;
+            padding: 1rem;
+            outline: none;
+            border: none;
+            resize: none;
+            background-color: var(--editor-bg);
+            color: var(--text-color);
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
+            line-height: 1.5;
+            overflow-y: auto;
+        }
+
+        .preview {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            background-color: var(--preview-bg);
+        }
+
+        /* Override GitHub Markdown CSS for dark mode */
+        [data-theme="dark"] .markdown-body {
+            color: var(--text-color);
+            background-color: var(--preview-bg);
+        }
+
+        /* Toast message */
+        .toast-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1000;
+        }
+
+        .toast-message {
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transform: translateY(100%);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .toast-message.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Mobile sidebar toggle */
+        .sidebar-toggle {
+            display: none;
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--navbar-bg);
+            padding: 1rem 0;
+        }
+
+        .footer-content {
+            text-align: center;
+            color: white;
+            font-size: 0.8rem;
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: -300px;
+                top: 0;
+                bottom: 0;
+                z-index: 99;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .sidebar.show {
+                left: 0;
+            }
+
+            .sidebar-toggle {
+                display: flex;
+            }
+
+            .notes-container {
+                height: calc(100vh - 130px);
+            }
+
+            .navbar-collapse {
+                background-color: var(--navbar-bg);
+                padding: 1rem;
+                border-radius: 0.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="UgandanKnuckles.png" alt="DH" height="40"> David Hill
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="apps.html">Apps</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="images.html">Gallery</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#contact">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <button id="darkModeToggle" class="btn btn-outline-light ms-3">
+                            🌙 Dark Mode
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- App Introduction -->
+    <div class="container mt-4">
+        <h1 class="text-center" data-aos="fade-up">Note Keeper</h1>
+        <p class="lead text-center mb-4" data-aos="fade-up">A simple, powerful note-taking application with Markdown
+            support</p>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container-fluid">
+            <div class="notes-container">
+                <!-- Sidebar -->
+                <div class="sidebar" id="notesSidebar">
+                    <div class="sidebar-header">
+                        <h5 class="sidebar-title">Notes</h5>
+                        <button class="new-note-btn" id="newNoteBtn" title="Create New Note">
+                            <i class="bi bi-plus"></i>
+                        </button>
+                    </div>
+                    <div class="search-bar">
+                        <input type="text" class="search-input" id="searchInput" placeholder="Search notes...">
+                    </div>
+                    <div class="notes-list" id="notesList">
+                        <!-- Notes will be added here dynamically -->
+                    </div>
+                </div>
+
+                <!-- Editor -->
+                <div class="editor-container" id="editorContainer">
+                    <!-- This content will be replaced when a note is selected or created -->
+                    <div class="no-notes" id="noNotesMessage">
+                        <div class="no-notes-icon">
+                            <i class="bi bi-journal-text"></i>
+                        </div>
+                        <h4>No Note Selected</h4>
+                        <p>Select a note from the sidebar or create a new one.</p>
+                        <button class="btn btn-primary mt-3" id="createFirstNoteBtn">
+                            <i class="bi bi-plus me-2"></i>Create Your First Note
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Sidebar Toggle -->
+        <button class="sidebar-toggle" id="sidebarToggle">
+            <i class="bi bi-list"></i>
+        </button>
+
+        <!-- Toast Messages Container -->
+        <div class="toast-container" id="toastContainer"></div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 David Hill Development. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- AOS - Animate On Scroll -->
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <!-- Marked.js for Markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Highlight.js for syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Initialize AOS Animation Library
+            AOS.init({
+                once: true,
+                duration: 800,
+            });
+
+            // Set up marked.js with highlight.js integration
+            marked.setOptions({
+                highlight: function (code, language) {
+                    const validLanguage = hljs.getLanguage(language) ? language : 'plaintext';
+                    return hljs.highlight(validLanguage, code).value;
+                },
+                breaks: true,
+                gfm: true
+            });
+
+            // DOM Elements
+            const notesSidebar = document.getElementById('notesSidebar');
+            const notesList = document.getElementById('notesList');
+            const newNoteBtn = document.getElementById('newNoteBtn');
+            const createFirstNoteBtn = document.getElementById('createFirstNoteBtn');
+            const editorContainer = document.getElementById('editorContainer');
+            const noNotesMessage = document.getElementById('noNotesMessage');
+            const searchInput = document.getElementById('searchInput');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const toastContainer = document.getElementById('toastContainer');
+
+            // App state
+            let notes = JSON.parse(localStorage.getItem('notes')) || [];
+            let currentNoteId = null;
+
+            // Dark Mode Toggle
+            const darkModeToggle = document.getElementById("darkModeToggle");
+            const currentTheme = localStorage.getItem("theme");
+            if (currentTheme) {
+                document.documentElement.setAttribute("data-theme", currentTheme);
+                darkModeToggle.textContent =
+                    currentTheme === "dark" ? "☀️ Light Mode" : "🌙 Dark Mode";
+            }
+            darkModeToggle.addEventListener("click", function () {
+                let theme = document.documentElement.getAttribute("data-theme");
+                if (theme === "dark") {
+                    document.documentElement.setAttribute("data-theme", "light");
+                    localStorage.setItem("theme", "light");
+                    darkModeToggle.textContent = "🌙 Dark Mode";
+                } else {
+                    document.documentElement.setAttribute("data-theme", "dark");
+                    localStorage.setItem("theme", "dark");
+                    darkModeToggle.textContent = "☀️ Light Mode";
+                }
+            });
+
+            // Helper function to generate UUID
+            function generateId() {
+                return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                    const r = Math.random() * 16 | 0;
+                    const v = c == 'x' ? r : (r & 0x3 | 0x8);
+                    return v.toString(16);
+                });
+            }
+
+            // Helper function to format date
+            function formatDate(dateString) {
+                const date = new Date(dateString);
+                return date.toLocaleDateString() + ' at ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            }
+
+            // Helper function to extract title from content
+            function extractTitle(content) {
+                const lines = content.split('\n');
+                // Look for a markdown heading or use the first line
+                for (const line of lines) {
+                    if (line.startsWith('# ')) {
+                        return line.substring(2).trim();
+                    }
+                }
+                // If no heading found, use the first non-empty line or a default
+                for (const line of lines) {
+                    if (line.trim().length > 0) {
+                        return line.trim().substring(0, 30) + (line.trim().length > 30 ? '...' : '');
+                    }
+                }
+                return 'Untitled Note';
+            }
+
+            // Helper function to extract preview from content
+            function extractPreview(content) {
+                // Remove markdown headings and get first content
+                const lines = content.split('\n');
+                let preview = '';
+                for (const line of lines) {
+                    if (!line.startsWith('#') && line.trim().length > 0) {
+                        preview = line.trim();
+                        break;
+                    }
+                }
+
+                // If no suitable preview found, use placeholder
+                if (!preview) {
+                    preview = 'Empty note';
+                }
+
+                // Truncate if needed
+                return preview.length > 60 ? preview.substring(0, 60) + '...' : preview;
+            }
+
+            // Create a new note
+            function createNewNote() {
+                const newNote = {
+                    id: generateId(),
+                    title: 'Untitled Note',
+                    content: '# Untitled Note\n\nStart writing your note here...',
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString()
+                };
+
+                notes.unshift(newNote);
+                saveNotes();
+                renderNotesList();
+                openNote(newNote.id);
+                showToast('New note created');
+
+                // On mobile, close the sidebar after creating a note
+                if (window.innerWidth < 768) {
+                    notesSidebar.classList.remove('show');
+                }
+            }
+
+            // Save notes to localStorage
+            function saveNotes() {
+                localStorage.setItem('notes', JSON.stringify(notes));
+            }
+
+            // Render the notes list in the sidebar
+            function renderNotesList(searchTerm = '') {
+                notesList.innerHTML = '';
+
+                // Filter notes if search term exists
+                const filteredNotes = searchTerm
+                    ? notes.filter(note =>
+                        note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        note.content.toLowerCase().includes(searchTerm.toLowerCase()))
+                    : notes;
+
+                if (filteredNotes.length === 0) {
+                    const emptyMessage = document.createElement('div');
+                    emptyMessage.className = 'p-3 text-center text-muted';
+                    emptyMessage.textContent = searchTerm
+                        ? 'No notes match your search'
+                        : 'No notes yet. Create your first note!';
+                    notesList.appendChild(emptyMessage);
+                    return;
+                }
+
+                filteredNotes.forEach(note => {
+                    const noteItem = document.createElement('div');
+                    noteItem.className = 'note-item';
+                    if (note.id === currentNoteId) {
+                        noteItem.classList.add('active');
+                    }
+
+                    noteItem.innerHTML = `
+            <div class="note-title">${note.title}</div>
+            <div class="note-preview">${extractPreview(note.content)}</div>
+            <div class="note-date">Updated ${formatDate(note.updatedAt)}</div>
+          `;
+
+                    noteItem.addEventListener('click', () => openNote(note.id));
+                    notesList.appendChild(noteItem);
+                });
+            }
+
+            // Open a note in the editor
+            function openNote(noteId) {
+                currentNoteId = noteId;
+                const note = notes.find(n => n.id === noteId);
+
+                if (!note) return;
+
+                // Hide no notes message
+                noNotesMessage.style.display = 'none';
+
+                // Create editor if it doesn't exist yet
+                if (!document.getElementById('noteEditor')) {
+                    editorContainer.innerHTML = `
+            <div class="editor-header">
+              <h5 class="editor-title" id="currentNoteTitle">${note.title}</h5>
+              <div class="editor-actions">
+                <button class="editor-action-btn" id="deleteNoteBtn" title="Delete Note">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </div>
+            <div class="tabs">
+              <div class="tab active" id="editTab">Edit</div>
+              <div class="tab" id="previewTab">Preview</div>
+            </div>
+            <div class="editor-content">
+              <textarea class="editor" id="noteEditor"></textarea>
+              <div class="preview markdown-body" id="notePreview" style="display: none;"></div>
+            </div>
+          `;
+
+                    // Add event listeners for editor actions
+                    document.getElementById('editTab').addEventListener('click', () => switchTab('edit'));
+                    document.getElementById('previewTab').addEventListener('click', () => switchTab('preview'));
+                    document.getElementById('deleteNoteBtn').addEventListener('click', () => deleteCurrentNote());
+
+                    const noteEditor = document.getElementById('noteEditor');
+                    noteEditor.addEventListener('input', debounce(updateCurrentNote, 500));
+                }
+
+                // Update editor content
+                document.getElementById('noteEditor').value = note.content;
+                document.getElementById('currentNoteTitle').textContent = note.title;
+                document.getElementById('notePreview').innerHTML = marked(note.content);
+
+                // Update active state in sidebar
+                renderNotesList(searchInput.value);
+            }
+
+            // Switch between edit and preview tabs
+            function switchTab(tab) {
+                const editTab = document.getElementById('editTab');
+                const previewTab = document.getElementById('previewTab');
+                const noteEditor = document.getElementById('noteEditor');
+                const notePreview = document.getElementById('notePreview');
+
+                if (tab === 'edit') {
+                    editTab.classList.add('active');
+                    previewTab.classList.remove('active');
+                    noteEditor.style.display = 'block';
+                    notePreview.style.display = 'none';
+                } else {
+                    editTab.classList.remove('active');
+                    previewTab.classList.add('active');
+                    noteEditor.style.display = 'none';
+                    notePreview.style.display = 'block';
+                    // Update preview content
+                    notePreview.innerHTML = marked(noteEditor.value);
+                }
+            }
+
+            // Update the current note when the content changes
+            function updateCurrentNote() {
+                if (!currentNoteId) return;
+
+                const noteEditor = document.getElementById('noteEditor');
+                const noteContent = noteEditor.value;
+                const noteTitle = extractTitle(noteContent);
+
+                // Update note in the notes array
+                const noteIndex = notes.findIndex(n => n.id === currentNoteId);
+                if (noteIndex === -1) return;
+
+                notes[noteIndex].content = noteContent;
+                notes[noteIndex].title = noteTitle;
+                notes[noteIndex].updatedAt = new Date().toISOString();
+
+                // Update the title in the editor
+                document.getElementById('currentNoteTitle').textContent = noteTitle;
+
+                // Also update the preview if it's visible
+                if (document.getElementById('previewTab').classList.contains('active')) {
+                    document.getElementById('notePreview').innerHTML = marked(noteContent);
+                }
+
+                // Save to localStorage
+                saveNotes();
+
+                // Re-render the list to update the preview
+                renderNotesList(searchInput.value);
+            }
+
+            // Delete the current note
+            function deleteCurrentNote() {
+                if (!currentNoteId) return;
+
+                if (confirm('Are you sure you want to delete this note? This action cannot be undone.')) {
+                    // Remove the note from the array
+                    notes = notes.filter(note => note.id !== currentNoteId);
+
+                    // Save to localStorage
+                    saveNotes();
+
+                    // Show the no notes message if there are no notes left
+                    if (notes.length === 0) {
+                        editorContainer.innerHTML = '';
+                        noNotesMessage.style.display = 'flex';
+                        currentNoteId = null;
+                    } else {
+                        // Open the first note
+                        currentNoteId = null;
+                        openNote(notes[0].id);
+                    }
+
+                    // Re-render the list
+                    renderNotesList(searchInput.value);
+                    showToast('Note deleted');
+                }
+            }
+
+            // Debounce function to limit how often a function is called
+            function debounce(func, wait) {
+                let timeout;
+                return function () {
+                    const context = this;
+                    const args = arguments;
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => {
+                        func.apply(context, args);
+                    }, wait);
+                };
+            }
+
+            // Show a toast message
+            function showToast(message) {
+                const toast = document.createElement('div');
+                toast.className = 'toast-message';
+                toast.textContent = message;
+                toastContainer.appendChild(toast);
+
+                // Trigger animation
+                setTimeout(() => {
+                    toast.classList.add('show');
+                }, 10);
+
+                // Remove after a delay
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => {
+                        toastContainer.removeChild(toast);
+                    }, 300);
+                }, 3000);
+            }
+
+            // Event Listeners
+            newNoteBtn.addEventListener('click', createNewNote);
+            createFirstNoteBtn.addEventListener('click', createNewNote);
+
+            searchInput.addEventListener('input', debounce(function () {
+                renderNotesList(this.value);
+            }, 300));
+
+            sidebarToggle.addEventListener('click', function () {
+                notesSidebar.classList.toggle('show');
+            });
+
+            // Initialize the app
+            if (notes.length === 0) {
+                // Show the no notes message
+                noNotesMessage.style.display = 'flex';
+            } else {
+                // Open the first note
+                openNote(notes[0].id);
+            }
+
+            // Render the initial notes list
+            renderNotesList();
+
+            // Example note for first-time users
+            if (notes.length === 0) {
+                const welcomeNote = {
+                    id: generateId(),
+                    title: 'Welcome to Note Keeper',
+                    content: `# Welcome to Note Keeper!
+
+## Features
+
+* **Markdown Support** - Format your notes with Markdown syntax
+* **Live Preview** - See how your formatted note will look
+* **Auto-saving** - Your notes are saved as you type
+* **Search** - Quickly find notes by title or content
+* **Dark Mode** - Easy on the eyes for late-night note-taking
+
+## Markdown Tips
+
+You can use Markdown to format your notes:
+
+**Bold text** or __also bold__
+
+*Italic text* or _also italic_
+
+### Lists
+
+- Item 1
+- Item 2
+  - Nested item
+
+1. Numbered item 1
+2. Numbered item 2
+
+### Code
+
+\`\`\`javascript
+function hello() {
+  console.log("Hello world!");
+}
+\`\`\`
+
+### Links
+
+[Visit David Hill Development](https://example.com)
+
+Enjoy using Note Keeper!
+          `,
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString()
+                };
+
+                notes.push(welcomeNote);
+                saveNotes();
+                renderNotesList();
+                openNote(welcomeNote.id);
+            }
+        });
+    </script>
+</body>
+
+</html>
