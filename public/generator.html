@@ -16,24 +16,26 @@
   <style>
     /* Root color variables + Dark Theme */
     :root {
-      --primary-color: #4361ee;
-      --primary-hover: #3a56d4;
+      --primary-color: #e60000;
+      --primary-hover: #b30000;
       --background-color: #ffffff;
       --card-bg: #f8f9fa;
       --text-color: #212529;
       --secondary-text: #6c757d;
-      --navbar-bg: #212529;
+      --navbar-bg: #000000;
       --section-spacing: 6rem;
+      --accent-color: #ff3333;
     }
 
     [data-theme="dark"] {
-      --primary-color: #4361ee;
-      --primary-hover: #3a56d4;
+      --primary-color: #ff0000;
+      --primary-hover: #cc0000;
       --background-color: #121212;
       --card-bg: #1e1e1e;
       --text-color: #f8f9fa;
       --secondary-text: #adb5bd;
-      --navbar-bg: #1c1c1c;
+      --navbar-bg: #000000;
+      --accent-color: #ff3333;
     }
 
     body {
@@ -48,12 +50,14 @@
       background-color: var(--navbar-bg) !important;
       padding: 1rem 0;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      border-bottom: 1px solid var(--primary-color);
     }
 
     .navbar-brand {
       font-weight: 700;
       display: flex;
       align-items: center;
+      color: var(--primary-color) !important;
     }
 
     .navbar-brand img {
@@ -65,6 +69,7 @@
       transition: all 0.3s ease;
       margin: 0 5px;
       position: relative;
+      color: #fff !important;
     }
 
     .nav-link:after {
@@ -83,6 +88,10 @@
       width: 100%;
     }
 
+    .nav-link:hover {
+      color: var(--primary-color) !important;
+    }
+
     /* Main content */
     main {
       min-height: 90vh;
@@ -97,20 +106,21 @@
       border-radius: 1rem;
       padding: 2.5rem;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      border-top: 3px solid var(--primary-color);
     }
 
     .password-display {
       position: relative;
       margin: 2rem 0;
       padding: 1.5rem;
-      background-color: rgba(67, 97, 238, 0.05);
+      background-color: rgba(255, 0, 0, 0.05);
       border-radius: 0.5rem;
       font-family: 'Courier New', monospace;
       font-size: 1.75rem;
       letter-spacing: 2px;
       text-align: center;
       word-break: break-all;
-      border: 1px solid rgba(67, 97, 238, 0.2);
+      border: 1px solid rgba(255, 0, 0, 0.2);
       min-height: 5rem;
       display: flex;
       align-items: center;
@@ -134,6 +144,8 @@
     .copy-btn:hover {
       background: var(--primary-hover);
       opacity: 1;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(255, 0, 0, 0.3);
     }
 
     .password-options {
@@ -175,7 +187,7 @@
     }
 
     .strength-strong {
-      background-color: #198754;
+      background-color: var(--primary-color);
     }
 
     .strength-text {
@@ -192,7 +204,7 @@
       display: flex;
       justify-content: space-between;
       padding: 0.75rem;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      border-bottom: 1px solid rgba(255, 0, 0, 0.1);
       font-family: 'Courier New', monospace;
     }
 
@@ -215,7 +227,7 @@
       background-color: var(--primary-hover);
       border-color: var(--primary-hover);
       transform: translateY(-2px);
-      box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);
+      box-shadow: 0 4px 10px rgba(255, 0, 0, 0.3);
     }
 
     .btn-generate:active {
@@ -261,10 +273,31 @@
       opacity: 1;
     }
 
+    /* Text highlight */
+    .text-highlight {
+      color: var(--primary-color);
+      text-shadow: 0 0 10px rgba(255, 0, 0, 0.1);
+    }
+
+    .btn-outline-primary {
+      color: var(--primary-color);
+      border-color: var(--primary-color);
+    }
+
+    .btn-outline-primary:hover {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+    }
+
     /* Footer */
     footer {
-      background-color: var(--navbar-bg);
+      background-color: #000000;
       padding: 4rem 0 2rem;
+      border-top: 3px solid var(--primary-color);
+    }
+
+    footer h5 {
+      color: var(--primary-color);
     }
 
     .footer-social {
@@ -281,6 +314,11 @@
     .footer-social a:hover {
       color: var(--primary-color);
       transform: translateY(-3px);
+    }
+
+    footer a.text-light:hover {
+      color: var(--primary-color) !important;
+      text-decoration: none;
     }
 
     /* Media Queries */
@@ -325,7 +363,7 @@
             <a class="nav-link" href="images.html">Gallery</a>
           </li>
           <li class="nav-item">
-            <button id="darkModeToggle" class="btn btn-outline-light ms-3">
+            <button id="darkModeToggle" class="btn btn-outline-danger ms-3">
               🌙 Dark Mode
             </button>
           </li>
@@ -339,9 +377,9 @@
     <div class="container">
       <div class="row justify-content-center" data-aos="fade-up">
         <div class="col-md-10">
-          <h1 class="text-center mb-4">Secure Password Generator</h1>
+          <h1 class="text-center mb-4">Secure <span class="text-highlight">Password</span> Generator</h1>
           <p class="lead text-center mb-5">Create strong, memorable passwords that are both secure and easy to remember
-            using our advanced word-based password generator.</p>
+            using our advanced word-based password generator with letter replacements.</p>
 
           <div class="password-container">
             <div class="password-display" id="passwordDisplay">
@@ -374,6 +412,10 @@
                 <input class="form-check-input" type="checkbox" id="threeWords" checked>
                 <label class="form-check-label" for="threeWords">Use Three Words</label>
               </div>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="replaceLetters" checked>
+                <label class="form-check-label" for="replaceLetters">Replace Letters (a→@, i→!, etc.)</label>
+              </div>
             </div>
 
             <div class="text-center mt-4">
@@ -391,13 +433,15 @@
           </div>
 
           <div class="mt-5" data-aos="fade-up">
-            <h2 class="h4">Why Use Our Password Generator?</h2>
+            <h2 class="h4">Why Use Our <span class="text-highlight">Password</span> Generator?</h2>
             <p>Using strong, unique passwords is essential for online security. Our word-based generator creates
               passwords that are:</p>
             <ul>
-              <li><strong>Secure:</strong> Hard for attackers to crack</li>
-              <li><strong>Memorable:</strong> Easier to remember than random characters</li>
-              <li><strong>Unique:</strong> A new combination every time</li>
+              <li><strong class="text-highlight">Secure:</strong> Hard for attackers to crack</li>
+              <li><strong class="text-highlight">Memorable:</strong> Easier to remember than random characters</li>
+              <li><strong class="text-highlight">Unique:</strong> A new combination every time</li>
+              <li><strong class="text-highlight">L33t-enhanced:</strong> Letter replacements add extra security while
+                maintaining readability</li>
             </ul>
             <p>All password generation happens in your browser - we never store or have access to your passwords.</p>
           </div>
@@ -472,6 +516,13 @@
     // Special characters
     const specialChars = ['!', '@', '#', '$', '%', '&', '*', '?'];
 
+    // Letter replacement map
+    const letterReplacements = {
+      'a': '@',
+      'i': '!',
+      's': '$',
+    };
+
     // DOM elements
     document.addEventListener("DOMContentLoaded", function () {
       // Initialize AOS Animation Library
@@ -488,6 +539,7 @@
       const includeSpecial = document.getElementById('includeSpecial');
       const allCaps = document.getElementById('allCaps');
       const threeWords = document.getElementById('threeWords');
+      const replaceLetters = document.getElementById('replaceLetters');
       const strengthBar = document.getElementById('strengthBar');
       const strengthText = document.getElementById('strengthText');
       const passwordHistory = document.getElementById('passwordHistory');
@@ -503,6 +555,7 @@
         document.documentElement.setAttribute("data-theme", currentTheme);
         darkModeToggle.textContent =
           currentTheme === "dark" ? "☀️ Light Mode" : "🌙 Dark Mode";
+        darkModeToggle.className = currentTheme === "dark" ? "btn btn-outline-light ms-3" : "btn btn-outline-danger ms-3";
       }
       darkModeToggle.addEventListener("click", function () {
         let theme = document.documentElement.getAttribute("data-theme");
@@ -510,10 +563,12 @@
           document.documentElement.setAttribute("data-theme", "light");
           localStorage.setItem("theme", "light");
           darkModeToggle.textContent = "🌙 Dark Mode";
+          darkModeToggle.className = "btn btn-outline-danger ms-3";
         } else {
           document.documentElement.setAttribute("data-theme", "dark");
           localStorage.setItem("theme", "dark");
           darkModeToggle.textContent = "☀️ Light Mode";
+          darkModeToggle.className = "btn btn-outline-light ms-3";
         }
       });
 
@@ -577,6 +632,21 @@
         return word.charAt(0).toUpperCase() + word.slice(1);
       }
 
+      function replaceLettersWithSymbols(word) {
+        if (!replaceLetters.checked) return word;
+
+        // Split word into characters, replace certain ones, then join back
+        return word.split('').map(char => {
+          const lowerChar = char.toLowerCase();
+          // If the character exists in our replacement map, replace it
+          // But keep the case if it was uppercase
+          if (letterReplacements[lowerChar]) {
+            return letterReplacements[lowerChar];
+          }
+          return char;
+        }).join('');
+      }
+
       function generatePassword() {
         // Get random words
         let word1 = capitalize(getRandomWord());
@@ -590,6 +660,13 @@
           if (threeWords.checked) {
             word3 = word3.toUpperCase();
           }
+        }
+
+        // Apply letter replacements
+        word1 = replaceLettersWithSymbols(word1);
+        word2 = replaceLettersWithSymbols(word2);
+        if (threeWords.checked) {
+          word3 = replaceLettersWithSymbols(word3);
         }
 
         // Generate number if checked
@@ -617,13 +694,16 @@
         else strength += 5;
 
         // Word combination
-        strength += threeWords.checked ? 30 : 20;
+        strength += threeWords.checked ? 25 : 15;
 
         // Numbers
         if (includeNumbers.checked) strength += 15;
 
         // Special characters
-        if (includeSpecial.checked) strength += 30;
+        if (includeSpecial.checked) strength += 20;
+
+        // Letter replacements
+        if (replaceLetters.checked) strength += 20;
 
         // Mixed case
         if (!allCaps.checked && /[a-z]/.test(password) && /[A-Z]/.test(password)) strength += 15;

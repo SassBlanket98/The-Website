@@ -18,24 +18,27 @@
   <style>
     /* Root color variables + Dark Theme */
     :root {
-      --primary-color: #4361ee;
-      --primary-hover: #3a56d4;
+      --primary-color: #e60000;
+      --primary-hover: #b30000;
       --background-color: #ffffff;
       --card-bg: #f8f9fa;
       --text-color: #212529;
       --secondary-text: #6c757d;
-      --navbar-bg: #212529;
+      --navbar-bg: #000000;
       --section-spacing: 6rem;
+      --hero-overlay: rgba(0, 0, 0, 0.7);
+      --accent-color: #ff3333;
     }
 
     [data-theme="dark"] {
-      --primary-color: #4361ee;
-      --primary-hover: #3a56d4;
+      --primary-color: #ff0000;
+      --primary-hover: #cc0000;
       --background-color: #121212;
       --card-bg: #1e1e1e;
       --text-color: #f8f9fa;
       --secondary-text: #adb5bd;
-      --navbar-bg: #1c1c1c;
+      --navbar-bg: #000000;
+      --accent-color: #ff3333;
     }
 
     body {
@@ -50,12 +53,14 @@
       background-color: var(--navbar-bg) !important;
       padding: 1rem 0;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      border-bottom: 1px solid var(--primary-color);
     }
 
     .navbar-brand {
       font-weight: 700;
       display: flex;
       align-items: center;
+      color: var(--primary-color) !important;
     }
 
     .navbar-brand img {
@@ -67,6 +72,7 @@
       transition: all 0.3s ease;
       margin: 0 5px;
       position: relative;
+      color: #fff !important;
     }
 
     .nav-link:after {
@@ -85,9 +91,14 @@
       width: 100%;
     }
 
+    .nav-link:hover {
+      color: var(--primary-color) !important;
+    }
+
     /* Main content */
     main {
       padding: var(--section-spacing) 0;
+      min-height: 100vh;
     }
 
     /* Apps header */
@@ -95,6 +106,12 @@
       text-align: center;
       margin-bottom: 3rem;
       position: relative;
+    }
+
+    .apps-header h1 {
+      color: var(--text-color);
+      position: relative;
+      display: inline-block;
     }
 
     .apps-header:after {
@@ -121,11 +138,12 @@
       flex-direction: column;
       background-color: var(--card-bg);
       color: var(--text-color);
+      border-top: 3px solid var(--primary-color);
     }
 
     .app-card:hover {
       transform: translateY(-10px);
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 15px 30px rgba(255, 0, 0, 0.1);
     }
 
     .app-img {
@@ -141,7 +159,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.6));
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8));
     }
 
     .app-icon {
@@ -150,8 +168,14 @@
       left: 50%;
       transform: translate(-50%, -50%);
       font-size: 3rem;
-      color: white;
-      opacity: 0.8;
+      color: var(--primary-color);
+      opacity: 0.9;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .app-card:hover .app-icon {
+      transform: translate(-50%, -50%) scale(1.2);
     }
 
     .app-card-body {
@@ -165,6 +189,7 @@
       font-size: 1.5rem;
       font-weight: 700;
       margin-bottom: 1rem;
+      color: var(--primary-color);
     }
 
     .app-card-text {
@@ -186,7 +211,7 @@
       background-color: var(--primary-hover);
       border-color: var(--primary-hover);
       transform: translateY(-2px);
-      box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);
+      box-shadow: 0 4px 10px rgba(255, 0, 0, 0.3);
     }
 
     .app-features {
@@ -199,15 +224,40 @@
     .app-feature {
       font-size: 0.75rem;
       padding: 0.25rem 0.75rem;
-      background-color: rgba(67, 97, 238, 0.1);
+      background-color: rgba(255, 0, 0, 0.1);
       color: var(--primary-color);
       border-radius: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .app-card:hover .app-feature {
+      background-color: rgba(255, 0, 0, 0.15);
+    }
+
+    .btn-primary {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+      padding: 0.6rem 1.5rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+      border-color: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(255, 0, 0, 0.3);
     }
 
     /* Footer */
     footer {
-      background-color: var(--navbar-bg);
+      background-color: #000000;
       padding: 4rem 0 2rem;
+      border-top: 3px solid var(--primary-color);
+    }
+
+    footer h5 {
+      color: var(--primary-color);
     }
 
     .footer-social {
@@ -224,6 +274,11 @@
     .footer-social a:hover {
       color: var(--primary-color);
       transform: translateY(-3px);
+    }
+
+    footer a.text-light:hover {
+      color: var(--primary-color) !important;
+      text-decoration: none;
     }
 
     /* Media Queries */
@@ -259,7 +314,7 @@
           <li class="nav-item"><a class="nav-link" href="images.html">Gallery</a></li>
           <!-- Dark Mode Toggle -->
           <li class="nav-item">
-            <button id="darkModeToggle" class="btn btn-outline-light ms-3">🌙 Dark Mode</button>
+            <button id="darkModeToggle" class="btn btn-outline-danger ms-3">🌙 Dark Mode</button>
           </li>
         </ul>
       </div>
@@ -270,7 +325,7 @@
   <main>
     <div class="container">
       <div class="apps-header" data-aos="fade-up">
-        <h1>Web Applications</h1>
+        <h1>Web <span class="text-highlight">Applications</span></h1>
         <p class="lead">Explore a collection of useful and interactive web applications</p>
       </div>
 
@@ -445,6 +500,7 @@
         document.documentElement.setAttribute("data-theme", currentTheme);
         darkModeToggle.textContent =
           currentTheme === "dark" ? "☀️ Light Mode" : "🌙 Dark Mode";
+        darkModeToggle.className = currentTheme === "dark" ? "btn btn-outline-light ms-3" : "btn btn-outline-danger ms-3";
       }
       darkModeToggle.addEventListener("click", function () {
         let theme = document.documentElement.getAttribute("data-theme");
@@ -452,10 +508,12 @@
           document.documentElement.setAttribute("data-theme", "light");
           localStorage.setItem("theme", "light");
           darkModeToggle.textContent = "🌙 Dark Mode";
+          darkModeToggle.className = "btn btn-outline-danger ms-3";
         } else {
           document.documentElement.setAttribute("data-theme", "dark");
           localStorage.setItem("theme", "dark");
           darkModeToggle.textContent = "☀️ Light Mode";
+          darkModeToggle.className = "btn btn-outline-light ms-3";
         }
       });
     });

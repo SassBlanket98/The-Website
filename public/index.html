@@ -18,24 +18,27 @@
   <style>
     /* Root color variables + Dark Theme */
     :root {
-      --primary-color: #4361ee;
-      --primary-hover: #3a56d4;
+      --primary-color: #e60000;
+      --primary-hover: #b30000;
       --background-color: #ffffff;
       --card-bg: #f8f9fa;
       --text-color: #212529;
       --secondary-text: #6c757d;
-      --navbar-bg: #212529;
+      --navbar-bg: #000000;
       --section-spacing: 6rem;
+      --hero-overlay: rgba(0, 0, 0, 0.7);
+      --accent-color: #ff3333;
     }
 
     [data-theme="dark"] {
-      --primary-color: #4361ee;
-      --primary-hover: #3a56d4;
+      --primary-color: #ff0000;
+      --primary-hover: #cc0000;
       --background-color: #121212;
       --card-bg: #1e1e1e;
       --text-color: #f8f9fa;
       --secondary-text: #adb5bd;
-      --navbar-bg: #1c1c1c;
+      --navbar-bg: #000000;
+      --accent-color: #ff3333;
     }
 
     body {
@@ -50,12 +53,14 @@
       background-color: var(--navbar-bg) !important;
       padding: 1rem 0;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      border-bottom: 1px solid var(--primary-color);
     }
 
     .navbar-brand {
       font-weight: 700;
       display: flex;
       align-items: center;
+      color: var(--primary-color) !important;
     }
 
     .navbar-brand img {
@@ -67,6 +72,7 @@
       transition: all 0.3s ease;
       margin: 0 5px;
       position: relative;
+      color: #fff !important;
     }
 
     .nav-link:after {
@@ -85,6 +91,10 @@
       width: 100%;
     }
 
+    .nav-link:hover {
+      color: var(--primary-color) !important;
+    }
+
     /* Uniform vertical spacing for all sections */
     section {
       padding: var(--section-spacing) 0;
@@ -97,7 +107,7 @@
       display: flex;
       align-items: center;
       position: relative;
-      background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.1)), url('https://images.unsplash.com/photo-1562813733-b31f71025d54?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2069&q=80');
+      background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('https://images.unsplash.com/photo-1562813733-b31f71025d54?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2069&q=80');
       background-size: cover;
       background-position: center;
       color: white;
@@ -143,7 +153,7 @@
       background-color: var(--primary-hover);
       border-color: var(--primary-hover);
       transform: translateY(-2px);
-      box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);
+      box-shadow: 0 4px 10px rgba(255, 0, 0, 0.3);
     }
 
     .btn-outline-primary {
@@ -155,6 +165,12 @@
     .btn-outline-primary:hover {
       background-color: var(--primary-color);
       border-color: var(--primary-color);
+      color: white;
+    }
+
+    .btn-outline-light:hover {
+      color: var(--primary-color);
+      background-color: white;
     }
 
     .hero-btns .btn {
@@ -171,11 +187,12 @@
       transition: all 0.3s ease;
       height: 100%;
       background-color: var(--card-bg);
+      border-top: 3px solid var(--primary-color);
     }
 
     .card:hover {
       transform: translateY(-10px);
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 15px 30px rgba(255, 0, 0, 0.1);
     }
 
     .card-body {
@@ -187,10 +204,17 @@
     .card-title {
       font-weight: 700;
       margin-bottom: 1rem;
+      color: var(--primary-color);
     }
 
     .card-text {
       color: var(--secondary-text);
+    }
+
+    #services {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
     }
 
     /* Services Icons */
@@ -200,7 +224,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: rgba(67, 97, 238, 0.1);
+      background-color: rgba(255, 0, 0, 0.1);
       color: var(--primary-color);
       border-radius: 50%;
       margin: 0 auto 1.5rem;
@@ -214,25 +238,52 @@
       transform: rotateY(180deg);
     }
 
+    #github-repos {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+    }
+
     /* GitHub Repos Section */
     .github-repos {
-      background-color: rgba(67, 97, 238, 0.05);
+      background-color: #0c0c0c;
+      color: white;
+    }
+
+    .github-repos .section-heading {
+      color: white;
     }
 
     .repo-card {
       min-height: 300px;
+      background-color: #1a1a1a;
+      border-top: 3px solid var(--primary-color);
+    }
+
+    .repo-card .card-body {
+      background-color: #1a1a1a;
+      color: white;
+    }
+
+    .repo-card .card-text {
+      color: #adb5bd;
     }
 
     .repo-stats {
       display: flex;
       gap: 1rem;
       margin: 1rem 0;
+      color: #adb5bd;
     }
 
     .repo-stat {
       display: flex;
       align-items: center;
       gap: 0.5rem;
+    }
+
+    .repo-card .card-body p.text-muted {
+      color: white !important;
     }
 
     /* Carousel Controls */
@@ -263,7 +314,7 @@
     /* Contact Form */
     .contact-form .form-control {
       background-color: var(--card-bg);
-      border: 1px solid rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 0, 0, 0.2);
       padding: 0.8rem;
       margin-bottom: 1.5rem;
       border-radius: 0.5rem;
@@ -271,9 +322,10 @@
     }
 
     .contact-form .form-control:focus {
-      box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
+      box-shadow: 0 0 0 0.25rem rgba(255, 0, 0, 0.25);
       border-color: var(--primary-color);
     }
+
 
     /* Section headings */
     .section-heading {
@@ -296,12 +348,18 @@
 
     .text-highlight {
       color: var(--primary-color);
+      text-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
     }
 
     /* Footer */
     footer {
-      background-color: var(--navbar-bg);
+      background-color: #000000;
       padding: 4rem 0 2rem;
+      border-top: 3px solid var(--primary-color);
+    }
+
+    footer h5 {
+      color: var(--primary-color);
     }
 
     .footer-social {
@@ -320,6 +378,11 @@
       transform: translateY(-3px);
     }
 
+    footer a.text-light:hover {
+      color: var(--primary-color) !important;
+      text-decoration: none;
+    }
+
     /* Password generator app specific styles */
     .password-container {
       position: relative;
@@ -329,6 +392,7 @@
       border-radius: 1rem;
       text-align: center;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      border-top: 3px solid var(--primary-color);
     }
 
     #password {
@@ -336,7 +400,7 @@
       font-size: 1.5rem;
       margin: 1.5rem 0;
       padding: 1rem;
-      background-color: rgba(67, 97, 238, 0.1);
+      background-color: rgba(255, 0, 0, 0.1);
       border-radius: 0.5rem;
       transition: all 0.3s ease;
     }
@@ -408,7 +472,7 @@
           <li class="nav-item"><a class="nav-link" href="images.html">Gallery</a></li>
           <!-- Dark Mode Toggle -->
           <li class="nav-item">
-            <button id="darkModeToggle" class="btn btn-outline-light ms-3">🌙 Dark Mode</button>
+            <button id="darkModeToggle" class="btn btn-outline-danger ms-3">🌙 Dark Mode</button>
           </li>
         </ul>
       </div>
@@ -447,7 +511,7 @@
               <p class="card-text">I craft bespoke websites that not only look stunning but also deliver a seamless user
                 experience. Using modern technologies and design best practices, I build responsive, secure, and
                 engaging digital experiences.</p>
-              <a href="#contact" class="btn btn-outline-primary mt-3">Learn More</a>
+              <a href="#contact" class="btn btn-outline-primary mt-3">Lets Create Your Website</a>
             </div>
           </div>
         </div>
@@ -601,6 +665,7 @@
         document.documentElement.setAttribute("data-theme", currentTheme);
         darkModeToggle.textContent =
           currentTheme === "dark" ? "☀️ Light Mode" : "🌙 Dark Mode";
+        darkModeToggle.className = currentTheme === "dark" ? "btn btn-outline-light ms-3" : "btn btn-outline-danger ms-3";
       }
       darkModeToggle.addEventListener("click", function () {
         let theme = document.documentElement.getAttribute("data-theme");
@@ -608,10 +673,12 @@
           document.documentElement.setAttribute("data-theme", "light");
           localStorage.setItem("theme", "light");
           darkModeToggle.textContent = "🌙 Dark Mode";
+          darkModeToggle.className = "btn btn-outline-danger ms-3";
         } else {
           document.documentElement.setAttribute("data-theme", "dark");
           localStorage.setItem("theme", "dark");
           darkModeToggle.textContent = "☀️ Light Mode";
+          darkModeToggle.className = "btn btn-outline-light ms-3";
         }
       });
 
@@ -651,7 +718,7 @@
                 <h5 class="card-title">${repo.name}</h5>
                 <p class="card-text">${repo.description || "A collection of code for various solutions and tools."}</p>
                 <div class="repo-stats">
-                  <span class="repo-stat"><i class="bi bi-star-fill text-warning"></i> Stars: ${Math.floor(Math.random() * 10) + 5}</span>
+                  <span class="repo-stat"><i class="bi bi-star-fill text-danger"></i> Stars: ${Math.floor(Math.random() * 10) + 5}</span>
                   <span class="repo-stat"><i class="bi bi-diagram-2"></i> Forks: ${Math.floor(Math.random() * 5) + 2}</span>
                 </div>
                 <p class="text-muted mb-3">Technologies: JavaScript, HTML, CSS, Python</p>
@@ -676,7 +743,7 @@
                       <h5 class="card-title">${data.name}</h5>
                       <p class="card-text">${data.description || repo.description}</p>
                       <div class="repo-stats">
-                        <span class="repo-stat"><i class="bi bi-star-fill text-warning"></i> Stars: ${data.stargazers_count}</span>
+                        <span class="repo-stat"><i class="bi bi-star-fill text-danger"></i> Stars: ${data.stargazers_count}</span>
                         <span class="repo-stat"><i class="bi bi-diagram-2"></i> Forks: ${data.forks_count}</span>
                         <span class="repo-stat"><i class="bi bi-eye"></i> Watchers: ${data.watchers_count}</span>
                       </div>
@@ -721,7 +788,7 @@
             this.innerHTML = `
               <div class="text-center py-5">
                 <div class="mb-4">
-                  <i class="bi bi-check-circle-fill text-success" style="font-size: 3rem;"></i>
+                  <i class="bi bi-check-circle-fill text-danger" style="font-size: 3rem;"></i>
                 </div>
                 <h4>Message Sent Successfully!</h4>
                 <p>Thank you for reaching out. I'll get back to you as soon as possible.</p>

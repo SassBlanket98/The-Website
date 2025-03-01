@@ -22,38 +22,40 @@
     <style>
         /* Root color variables + Dark Theme */
         :root {
-            --primary-color: #4361ee;
-            --primary-hover: #3a56d4;
+            --primary-color: #e60000;
+            --primary-hover: #b30000;
             --background-color: #ffffff;
             --card-bg: #f8f9fa;
             --text-color: #212529;
             --secondary-text: #6c757d;
-            --navbar-bg: #212529;
+            --navbar-bg: #000000;
             --section-spacing: 6rem;
             --sidebar-bg: #f8f9fa;
             --note-item-bg: #fff;
-            --note-item-hover: #f1f3f9;
+            --note-item-hover: #fff0f0;
             --editor-bg: #fff;
-            --editor-border: #dee2e6;
+            --editor-border: #ffcccc;
             --no-notes-bg: #f8f9fa;
             --preview-bg: #fff;
+            --accent-color: #ff3333;
         }
 
         [data-theme="dark"] {
-            --primary-color: #4361ee;
-            --primary-hover: #3a56d4;
+            --primary-color: #ff0000;
+            --primary-hover: #cc0000;
             --background-color: #121212;
             --card-bg: #1e1e1e;
             --text-color: #f8f9fa;
             --secondary-text: #adb5bd;
-            --navbar-bg: #1c1c1c;
+            --navbar-bg: #000000;
             --sidebar-bg: #1e1e1e;
             --note-item-bg: #2d2d2d;
-            --note-item-hover: #333;
+            --note-item-hover: #3d2525;
             --editor-bg: #2d2d2d;
-            --editor-border: #444;
+            --editor-border: #5a0000;
             --no-notes-bg: #1e1e1e;
             --preview-bg: #2d2d2d;
+            --accent-color: #ff3333;
         }
 
         body {
@@ -71,12 +73,14 @@
             background-color: var(--navbar-bg) !important;
             padding: 1rem 0;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid var(--primary-color);
         }
 
         .navbar-brand {
             font-weight: 700;
             display: flex;
             align-items: center;
+            color: var(--primary-color) !important;
         }
 
         .navbar-brand img {
@@ -88,6 +92,7 @@
             transition: all 0.3s ease;
             margin: 0 5px;
             position: relative;
+            color: #fff !important;
         }
 
         .nav-link:after {
@@ -104,6 +109,16 @@
         .nav-link:hover:after,
         .nav-link.active:after {
             width: 100%;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+        }
+
+        /* Text highlight */
+        .text-highlight {
+            color: var(--primary-color);
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.1);
         }
 
         /* Main content */
@@ -143,6 +158,7 @@
         .sidebar-title {
             font-weight: 600;
             margin: 0;
+            color: var(--primary-color);
         }
 
         .new-note-btn {
@@ -161,6 +177,7 @@
         .new-note-btn:hover {
             background-color: var(--primary-hover);
             transform: scale(1.1);
+            box-shadow: 0 4px 10px rgba(255, 0, 0, 0.3);
         }
 
         .search-bar {
@@ -177,6 +194,12 @@
             color: var(--text-color);
         }
 
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.25);
+        }
+
         .notes-list {
             flex: 1;
             overflow-y: auto;
@@ -190,14 +213,18 @@
             border-radius: 0.5rem;
             cursor: pointer;
             transition: all 0.3s ease;
+            border-left: 3px solid transparent;
         }
 
         .note-item:hover {
             background-color: var(--note-item-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
 
         .note-item.active {
             border-left: 3px solid var(--primary-color);
+            background-color: var(--note-item-hover);
         }
 
         .note-title {
@@ -206,6 +233,7 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            color: var(--primary-color);
         }
 
         .note-preview {
@@ -246,7 +274,7 @@
         .no-notes-icon {
             font-size: 3rem;
             margin-bottom: 1rem;
-            color: var(--secondary-text);
+            color: var(--primary-color);
         }
 
         .editor-header {
@@ -262,6 +290,7 @@
             margin: 0;
             font-weight: 600;
             flex: 1;
+            color: var(--primary-color);
         }
 
         .editor-actions {
@@ -379,10 +408,38 @@
             font-size: 1.25rem;
         }
 
+        .sidebar-toggle:hover {
+            background-color: var(--primary-hover);
+            transform: scale(1.05);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            border-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(255, 0, 0, 0.3);
+        }
+
+        .btn-outline-danger {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline-danger:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
         /* Footer */
         footer {
-            background-color: var(--navbar-bg);
+            background-color: #000000;
             padding: 1rem 0;
+            border-top: 3px solid var(--primary-color);
         }
 
         .footer-content {
@@ -446,10 +503,7 @@
                         <a class="nav-link" href="images.html">Gallery</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="index.html#contact">Contact</a>
-                    </li>
-                    <li class="nav-item">
-                        <button id="darkModeToggle" class="btn btn-outline-light ms-3">
+                        <button id="darkModeToggle" class="btn btn-outline-danger ms-3">
                             🌙 Dark Mode
                         </button>
                     </li>
@@ -460,7 +514,7 @@
 
     <!-- App Introduction -->
     <div class="container mt-4">
-        <h1 class="text-center" data-aos="fade-up">Note Keeper</h1>
+        <h1 class="text-center" data-aos="fade-up">Note <span class="text-highlight">Keeper</span></h1>
         <p class="lead text-center mb-4" data-aos="fade-up">A simple, powerful note-taking application with Markdown
             support</p>
     </div>
@@ -569,6 +623,7 @@
                 document.documentElement.setAttribute("data-theme", currentTheme);
                 darkModeToggle.textContent =
                     currentTheme === "dark" ? "☀️ Light Mode" : "🌙 Dark Mode";
+                darkModeToggle.className = currentTheme === "dark" ? "btn btn-outline-light ms-3" : "btn btn-outline-danger ms-3";
             }
             darkModeToggle.addEventListener("click", function () {
                 let theme = document.documentElement.getAttribute("data-theme");
@@ -576,10 +631,12 @@
                     document.documentElement.setAttribute("data-theme", "light");
                     localStorage.setItem("theme", "light");
                     darkModeToggle.textContent = "🌙 Dark Mode";
+                    darkModeToggle.className = "btn btn-outline-danger ms-3";
                 } else {
                     document.documentElement.setAttribute("data-theme", "dark");
                     localStorage.setItem("theme", "dark");
                     darkModeToggle.textContent = "☀️ Light Mode";
+                    darkModeToggle.className = "btn btn-outline-light ms-3";
                 }
             });
 

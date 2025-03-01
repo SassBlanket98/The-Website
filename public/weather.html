@@ -16,30 +16,32 @@
     <style>
         /* Root color variables + Dark Theme */
         :root {
-            --primary-color: #4361ee;
-            --primary-hover: #3a56d4;
+            --primary-color: #e60000;
+            --primary-hover: #b30000;
             --background-color: #ffffff;
             --card-bg: #f8f9fa;
             --text-color: #212529;
             --secondary-text: #6c757d;
-            --navbar-bg: #212529;
+            --navbar-bg: #000000;
             --section-spacing: 6rem;
-            --weather-sunny: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
-            --weather-cloudy: linear-gradient(to top, #c1dfc4 0%, #deecdd 100%);
-            --weather-rainy: linear-gradient(to top, #30cfd0 0%, #330867 100%);
+            --weather-sunny: linear-gradient(120deg, #f6d365 0%, #e60000 100%);
+            --weather-cloudy: linear-gradient(to top, #e9e9e9 0%, #f8f8f8 100%);
+            --weather-rainy: linear-gradient(to top, #e60000 0%, #000000 100%);
             --weather-snow: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);
-            --weather-storm: linear-gradient(to top, #09203f 0%, #537895 100%);
-            --weather-night: linear-gradient(to top, #0c3483 0%, #a2b6df 100%, #6b8cce 100%, #a2b6df 100%);
+            --weather-storm: linear-gradient(to top, #000000 0%, #e60000 100%);
+            --weather-night: linear-gradient(to top, #000000 0%, #333333 100%, #555555 100%, #777777 100%);
+            --accent-color: #ff3333;
         }
 
         [data-theme="dark"] {
-            --primary-color: #4361ee;
-            --primary-hover: #3a56d4;
+            --primary-color: #ff0000;
+            --primary-hover: #cc0000;
             --background-color: #121212;
             --card-bg: #1e1e1e;
             --text-color: #f8f9fa;
             --secondary-text: #adb5bd;
-            --navbar-bg: #1c1c1c;
+            --navbar-bg: #000000;
+            --accent-color: #ff3333;
         }
 
         body {
@@ -54,12 +56,14 @@
             background-color: var(--navbar-bg) !important;
             padding: 1rem 0;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid var(--primary-color);
         }
 
         .navbar-brand {
             font-weight: 700;
             display: flex;
             align-items: center;
+            color: var(--primary-color) !important;
         }
 
         .navbar-brand img {
@@ -71,6 +75,7 @@
             transition: all 0.3s ease;
             margin: 0 5px;
             position: relative;
+            color: #fff !important;
         }
 
         .nav-link:after {
@@ -87,6 +92,16 @@
         .nav-link:hover:after,
         .nav-link.active:after {
             width: 100%;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+        }
+
+        /* Text highlight */
+        .text-highlight {
+            color: var(--primary-color);
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.1);
         }
 
         /* Main content */
@@ -109,11 +124,18 @@
         .search-input {
             padding: 0.75rem 1rem;
             border-radius: 2rem;
-            border: 1px solid #dee2e6;
+            border: 1px solid rgba(255, 0, 0, 0.2);
             width: 100%;
             background-color: var(--card-bg);
             color: var(--text-color);
             padding-right: 3rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(255, 0, 0, 0.25);
         }
 
         .search-button {
@@ -149,13 +171,15 @@
             font-size: 0.875rem;
             cursor: pointer;
             transition: all 0.3s ease;
-            border: 1px solid #dee2e6;
+            border: 1px solid rgba(255, 0, 0, 0.2);
         }
 
         .recent-search-item:hover {
             background-color: var(--primary-color);
             color: white;
             border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(255, 0, 0, 0.2);
         }
 
         .weather-card {
@@ -165,11 +189,12 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
             transition: all 0.3s ease;
             height: 100%;
+            border-top: 3px solid var(--primary-color);
         }
 
         .weather-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 15px 40px rgba(255, 0, 0, 0.1);
         }
 
         .current-weather {
@@ -177,6 +202,7 @@
             position: relative;
             color: white;
             overflow: hidden;
+            border-top: none;
         }
 
         .weather-bg {
@@ -265,6 +291,7 @@
         .forecast-title {
             margin-bottom: 1.5rem;
             font-weight: 600;
+            color: var(--primary-color);
         }
 
         .forecast-cards {
@@ -280,22 +307,26 @@
             text-align: center;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
             transition: all 0.3s ease;
+            border-left: 2px solid var(--primary-color);
         }
 
         .forecast-card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 6px 15px rgba(255, 0, 0, 0.1);
+            background-color: rgba(255, 0, 0, 0.03);
         }
 
         .forecast-day {
             font-size: 0.875rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
+            color: var(--primary-color);
         }
 
         .forecast-icon {
             font-size: 2rem;
             margin-bottom: 0.5rem;
+            color: var(--primary-color);
         }
 
         .forecast-temp {
@@ -316,6 +347,7 @@
             margin-bottom: 1.5rem;
             text-align: center;
             display: none;
+            border-left: 4px solid var(--primary-color);
         }
 
         /* Loading spinner */
@@ -348,6 +380,7 @@
         .info-title {
             margin-bottom: 1rem;
             font-weight: 600;
+            color: var(--primary-color);
         }
 
         .info-card {
@@ -356,6 +389,17 @@
             padding: 1.5rem;
             height: 100%;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            border-top: 2px solid var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(255, 0, 0, 0.1);
+        }
+
+        .info-card h5 {
+            color: var(--primary-color);
         }
 
         /* Weather icons */
@@ -373,7 +417,7 @@
         }
 
         .wi-rainy {
-            color: #0dcaf0;
+            color: var(--primary-color);
         }
 
         .wi-snow {
@@ -381,13 +425,28 @@
         }
 
         .wi-storm {
-            color: #6610f2;
+            color: var(--primary-color);
+        }
+
+        .btn-outline-danger {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline-danger:hover {
+            background-color: var(--primary-color);
+            color: white;
         }
 
         /* Footer */
         footer {
-            background-color: var(--navbar-bg);
+            background-color: #000000;
             padding: 4rem 0 2rem;
+            border-top: 3px solid var(--primary-color);
+        }
+
+        footer h5 {
+            color: var(--primary-color);
         }
 
         .footer-social {
@@ -404,6 +463,11 @@
         .footer-social a:hover {
             color: var(--primary-color);
             transform: translateY(-3px);
+        }
+
+        footer a.text-light:hover {
+            color: var(--primary-color) !important;
+            text-decoration: none;
         }
 
         /* Media Queries */
@@ -452,10 +516,7 @@
                         <a class="nav-link" href="images.html">Gallery</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="index.html#contact">Contact</a>
-                    </li>
-                    <li class="nav-item">
-                        <button id="darkModeToggle" class="btn btn-outline-light ms-3">
+                        <button id="darkModeToggle" class="btn btn-outline-danger ms-3">
                             🌙 Dark Mode
                         </button>
                     </li>
@@ -469,7 +530,7 @@
         <div class="container">
             <div class="row justify-content-center" data-aos="fade-up">
                 <div class="col-md-10">
-                    <h1 class="text-center mb-4">Weather Dashboard</h1>
+                    <h1 class="text-center mb-4">Weather <span class="text-highlight">Dashboard</span></h1>
                     <p class="lead text-center mb-5">Check current weather conditions and forecasts for any location
                         worldwide</p>
 
@@ -477,7 +538,7 @@
                         <!-- Search Section -->
                         <div class="search-container" data-aos="fade-up">
                             <input type="text" class="search-input" id="searchInput"
-                                placeholder="Enter a city name (e.g., London, Tokyo, New York)">
+                                placeholder="Enter a city name (e.g., Bryanston, London, Tokyo)">
                             <button class="search-button" id="searchButton">
                                 <i class="bi bi-search"></i>
                             </button>
@@ -582,7 +643,8 @@
                                             </div>
                                         </div>
                                         <div class="d-flex align-items-center mt-3">
-                                            <i class="bi bi-sunset me-3" style="font-size: 2rem; color: #fd7e14;"></i>
+                                            <i class="bi bi-sunset me-3"
+                                                style="font-size: 2rem; color: var(--primary-color);"></i>
                                             <div>
                                                 <div><span id="sunset">--:--</span></div>
                                                 <small class="text-muted">Sunset</small>
@@ -602,7 +664,8 @@
                                             <small>Poor</small>
                                         </div>
                                         <div class="d-flex align-items-center mt-3">
-                                            <i class="bi bi-cloud me-3" style="font-size: 2rem;"></i>
+                                            <i class="bi bi-cloud me-3"
+                                                style="font-size: 2rem; color: var(--primary-color);"></i>
                                             <div>
                                                 <div><span id="airQuality">--</span></div>
                                                 <small class="text-muted">Air Quality Index</small>
@@ -614,14 +677,16 @@
                                     <div class="info-card">
                                         <h5>Pressure & Visibility</h5>
                                         <div class="d-flex align-items-center mt-3">
-                                            <i class="bi bi-speedometer2 me-3" style="font-size: 2rem;"></i>
+                                            <i class="bi bi-speedometer2 me-3"
+                                                style="font-size: 2rem; color: var(--primary-color);"></i>
                                             <div>
                                                 <div><span id="pressure">-- hPa</span></div>
                                                 <small class="text-muted">Pressure</small>
                                             </div>
                                         </div>
                                         <div class="d-flex align-items-center mt-3">
-                                            <i class="bi bi-eye me-3" style="font-size: 2rem;"></i>
+                                            <i class="bi bi-eye me-3"
+                                                style="font-size: 2rem; color: var(--primary-color);"></i>
                                             <div>
                                                 <div><span id="visibility">-- km</span></div>
                                                 <small class="text-muted">Visibility</small>
@@ -634,7 +699,7 @@
                     </div>
 
                     <div class="mt-5" data-aos="fade-up">
-                        <h2 class="h4 text-center">About This Weather App</h2>
+                        <h2 class="h4 text-center">About This <span class="text-highlight">Weather</span> App</h2>
                         <p>This weather dashboard fetches real-time weather data from reliable weather API services. The
                             interface provides current conditions, forecasts, and additional meteorological information
                             for locations worldwide.</p>
@@ -662,7 +727,6 @@
                         <li><a href="index.html" class="text-light">Home</a></li>
                         <li><a href="apps.html" class="text-light">Apps</a></li>
                         <li><a href="images.html" class="text-light">Gallery</a></li>
-                        <li><a href="index.html#contact" class="text-light">Contact</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-4 mb-4">
@@ -728,17 +792,15 @@
                 document.documentElement.setAttribute("data-theme", currentTheme);
                 darkModeToggle.textContent =
                     currentTheme === "dark" ? "☀️ Light Mode" : "🌙 Dark Mode";
+                darkModeToggle.className = currentTheme === "dark" ? "btn btn-outline-light ms-3" : "btn btn-outline-danger ms-3";
             }
             darkModeToggle.addEventListener("click", function () {
                 let theme = document.documentElement.getAttribute("data-theme");
                 if (theme === "dark") {
                     document.documentElement.setAttribute("data-theme", "light");
                     localStorage.setItem("theme", "light");
-                    darkModeToggle.textContent = "🌙 Dark Mode";
-                } else {
-                    document.documentElement.setAttribute("data-theme", "dark");
-                    localStorage.setItem("theme", "dark");
                     darkModeToggle.textContent = "☀️ Light Mode";
+                    darkModeToggle.className = "btn btn-outline-light ms-3";
                 }
             });
 
@@ -818,8 +880,8 @@
             }
 
             function displayWeatherData(data) {
-                // Update current weather
-                locationElement.textContent = data.location;
+                // Update current weather with location, province, and country
+                locationElement.textContent = `${data.location}, ${data.province}, ${data.country}`;
                 dateElement.textContent = data.date;
                 temperatureElement.textContent = `${data.temperature}°`;
                 conditionElement.textContent = data.condition;
@@ -914,6 +976,42 @@
                 }
             }
 
+            // Function to determine country from location
+            function getCountryFromLocation(location) {
+                // Simple mapping for common cities
+                const locationLower = location.toLowerCase();
+                if (locationLower.includes('bryanston')) return 'South Africa';
+                if (locationLower.includes('johannesburg') || locationLower.includes('pretoria') ||
+                    locationLower.includes('durban') || locationLower.includes('cape town')) return 'South Africa';
+                if (locationLower.includes('new york') || locationLower.includes('los angeles') ||
+                    locationLower.includes('chicago')) return 'United States';
+                if (locationLower.includes('london') || locationLower.includes('manchester')) return 'United Kingdom';
+                if (locationLower.includes('tokyo')) return 'Japan';
+                if (locationLower.includes('paris')) return 'France';
+
+                // Default or random country for other locations
+                const countries = ['South Africa', 'United States', 'United Kingdom', 'Canada', 'Australia', 'Germany', 'France'];
+                return countries[Math.floor((location.charCodeAt(0) % countries.length))];
+            }
+
+            // Function to determine province from location
+            function getProvinceFromLocation(location) {
+                // Simple mapping for common cities
+                const locationLower = location.toLowerCase();
+                if (locationLower.includes('bryanston') || locationLower.includes('johannesburg') ||
+                    locationLower.includes('pretoria')) return 'Gauteng';
+                if (locationLower.includes('durban')) return 'KwaZulu-Natal';
+                if (locationLower.includes('cape town')) return 'Western Cape';
+                if (locationLower.includes('new york')) return 'New York';
+                if (locationLower.includes('los angeles')) return 'California';
+                if (locationLower.includes('chicago')) return 'Illinois';
+                if (locationLower.includes('london')) return 'England';
+
+                // Default or random province for other locations
+                const provinces = ['Gauteng', 'Western Cape', 'Eastern Cape', 'KwaZulu-Natal', 'Free State', 'North West', 'Limpopo'];
+                return provinces[Math.floor((location.charCodeAt(0) % provinces.length))];
+            }
+
             // Mock weather data function for demonstration
             function getMockWeatherData(location) {
                 // Use the location string to generate deterministic but seemingly random data
@@ -987,6 +1085,8 @@
 
                 return {
                     location: location,
+                    country: getCountryFromLocation(location),
+                    province: getProvinceFromLocation(location),
                     date: today.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
                     temperature: temperature,
                     feelsLike: temperature + rand(-3, 3),
@@ -1004,7 +1104,7 @@
             }
 
             // Load default location on start
-            searchInput.value = "New York";
+            searchInput.value = "Bryanston";
             searchWeather();
         });
     </script>

@@ -19,24 +19,27 @@
   <style>
     /* Root color variables + Dark Theme */
     :root {
-      --primary-color: #4361ee;
-      --primary-hover: #3a56d4;
+      --primary-color: #e60000;
+      --primary-hover: #b30000;
       --background-color: #ffffff;
       --card-bg: #f8f9fa;
       --text-color: #212529;
       --secondary-text: #6c757d;
-      --navbar-bg: #212529;
+      --navbar-bg: #000000;
       --section-spacing: 6rem;
+      --hero-overlay: rgba(0, 0, 0, 0.7);
+      --accent-color: #ff3333;
     }
 
     [data-theme="dark"] {
-      --primary-color: #4361ee;
-      --primary-hover: #3a56d4;
+      --primary-color: #ff0000;
+      --primary-hover: #cc0000;
       --background-color: #121212;
       --card-bg: #1e1e1e;
       --text-color: #f8f9fa;
       --secondary-text: #adb5bd;
-      --navbar-bg: #1c1c1c;
+      --navbar-bg: #000000;
+      --accent-color: #ff3333;
     }
 
     body {
@@ -51,12 +54,14 @@
       background-color: var(--navbar-bg) !important;
       padding: 1rem 0;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      border-bottom: 1px solid var(--primary-color);
     }
 
     .navbar-brand {
       font-weight: 700;
       display: flex;
       align-items: center;
+      color: var(--primary-color) !important;
     }
 
     .navbar-brand img {
@@ -68,6 +73,7 @@
       transition: all 0.3s ease;
       margin: 0 5px;
       position: relative;
+      color: #fff !important;
     }
 
     .nav-link:after {
@@ -84,6 +90,10 @@
     .nav-link:hover:after,
     .nav-link.active:after {
       width: 100%;
+    }
+
+    .nav-link:hover {
+      color: var(--primary-color) !important;
     }
 
     /* Main content */
@@ -126,7 +136,7 @@
 
     .gallery-item:hover {
       transform: translateY(-10px);
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 15px 30px rgba(255, 0, 0, 0.1);
     }
 
     .gallery-img {
@@ -190,6 +200,11 @@
       color: white;
     }
 
+    .btn-danger {
+      background-color: var(--primary-color) !important;
+      border-color: var(--primary-color) !important;
+    }
+
     /* Lightbox custom styling */
     .lb-data .lb-caption {
       font-size: 1rem;
@@ -201,10 +216,37 @@
       text-align: center;
     }
 
+    /* Custom close button for lightbox */
+    .lb-closeContainer {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 9999;
+    }
+
+    .lb-close {
+      width: 30px !important;
+      height: 30px !important;
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 50%;
+      padding: 5px;
+      transition: all 0.3s ease;
+    }
+
+    .lb-close:hover {
+      background-color: var(--primary-color);
+      transform: scale(1.1);
+    }
+
     /* Footer */
     footer {
-      background-color: var(--navbar-bg);
+      background-color: #000000;
       padding: 4rem 0 2rem;
+      border-top: 3px solid var(--primary-color);
+    }
+
+    footer h5 {
+      color: var(--primary-color);
     }
 
     .footer-social {
@@ -221,6 +263,11 @@
     .footer-social a:hover {
       color: var(--primary-color);
       transform: translateY(-3px);
+    }
+
+    footer a.text-light:hover {
+      color: var(--primary-color) !important;
+      text-decoration: none;
     }
 
     /* Media Queries */
@@ -256,7 +303,7 @@
           <li class="nav-item"><a class="nav-link active" href="images.html">Gallery</a></li>
           <!-- Dark Mode Toggle -->
           <li class="nav-item">
-            <button id="darkModeToggle" class="btn btn-outline-light ms-3">🌙 Dark Mode</button>
+            <button id="darkModeToggle" class="btn btn-outline-danger ms-3">🌙 Dark Mode</button>
           </li>
         </ul>
       </div>
@@ -315,9 +362,9 @@
           </a>
         </div>
 
-        <!-- Additional images - these would use placeholder images until you have real images -->
+        <!-- Image 4 - Updated with actual path -->
         <div class="gallery-item" data-category="landscape">
-          <a href="#" data-lightbox="gallery" data-title="Crystal Mountains - Fantasy Landscape">
+          <a href="fantasyLandscape.png" data-lightbox="gallery" data-title="Crystal Mountains - Fantasy Landscape">
             <img src="fantasyLandscape.png" alt="Fantasy Landscape" class="gallery-img">
             <div class="gallery-overlay">
               <h3 class="gallery-title">Crystal Mountains</h3>
@@ -326,8 +373,9 @@
           </a>
         </div>
 
+        <!-- Image 5 - Updated with actual path -->
         <div class="gallery-item" data-category="concept">
-          <a href="#" data-lightbox="gallery" data-title="Future City - Cyberpunk Concept">
+          <a href="Cyberpunk.png" data-lightbox="gallery" data-title="Future City - Cyberpunk Concept">
             <img src="Cyberpunk.png" alt="Cyberpunk Concept" class="gallery-img">
             <div class="gallery-overlay">
               <h3 class="gallery-title">Future City</h3>
@@ -336,8 +384,9 @@
           </a>
         </div>
 
+        <!-- Image 6 - Updated with actual path -->
         <div class="gallery-item" data-category="landscape">
-          <a href="#" data-lightbox="gallery" data-title="Enchanted Forest - Mystical Environment">
+          <a href="forest.png" data-lightbox="gallery" data-title="Enchanted Forest - Mystical Environment">
             <img src="forest.png" alt="Enchanted Forest" class="gallery-img">
             <div class="gallery-overlay">
               <h3 class="gallery-title">Enchanted Forest</h3>
@@ -352,7 +401,7 @@
         <p>These images are created using state-of-the-art AI image generation models, fine-tuned with custom parameters
           and careful prompting to achieve these unique visual styles. Each image represents hours of refinement and
           experimentation to achieve the perfect balance of creativity and fidelity.</p>
-        <a href="index.html#contact" class="btn btn-primary mt-3">Commission Custom Art</a>
+        <a href="index.html#contact" class="btn btn-danger mt-3">Commission Custom Art</a>
       </div>
     </div>
   </main>
@@ -413,6 +462,7 @@
         document.documentElement.setAttribute("data-theme", currentTheme);
         darkModeToggle.textContent =
           currentTheme === "dark" ? "☀️ Light Mode" : "🌙 Dark Mode";
+        darkModeToggle.className = currentTheme === "dark" ? "btn btn-outline-light ms-3" : "btn btn-outline-danger ms-3";
       }
       darkModeToggle.addEventListener("click", function () {
         let theme = document.documentElement.getAttribute("data-theme");
@@ -420,10 +470,12 @@
           document.documentElement.setAttribute("data-theme", "light");
           localStorage.setItem("theme", "light");
           darkModeToggle.textContent = "🌙 Dark Mode";
+          darkModeToggle.className = "btn btn-outline-danger ms-3";
         } else {
           document.documentElement.setAttribute("data-theme", "dark");
           localStorage.setItem("theme", "dark");
           darkModeToggle.textContent = "☀️ Light Mode";
+          darkModeToggle.className = "btn btn-outline-light ms-3";
         }
       });
 
@@ -461,12 +513,31 @@
         });
       });
 
-      // Initialize Lightbox
+      // Initialize Lightbox with custom options
       lightbox.option({
         'resizeDuration': 200,
         'wrapAround': true,
         'disableScrolling': true,
-        'fadeDuration': 300
+        'fadeDuration': 300,
+        'positionFromTop': 50,
+        'showImageNumberLabel': false
+      });
+
+      // Custom positioning for close button
+      // This will run after lightbox is initialized to move the close button
+      document.addEventListener('DOMNodeInserted', function (e) {
+        if (e.target.classList && e.target.classList.contains('lb-closeContainer')) {
+          // Move the close button to top right
+          const closeContainer = e.target;
+          const lightboxContainer = closeContainer.closest('.lb-container');
+          if (lightboxContainer) {
+            lightboxContainer.style.position = 'relative';
+            closeContainer.style.position = 'absolute';
+            closeContainer.style.top = '10px';
+            closeContainer.style.right = '10px';
+            closeContainer.style.zIndex = '9999';
+          }
+        }
       });
     });
   </script>
